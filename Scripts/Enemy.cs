@@ -1,11 +1,16 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// エネミーのベースデータ
+/// </summary>
 public class Enemy : MonoBehaviour
 {
+    //public static CookieManager cookieManager;
+    public static EnemyManager enemyManager;
+
     public EnemyData data;
     public int currentHP;
 
-    public EnemyManager enemyManager;
     public Canvas worldSpaceCanvas;
     public TMPro.TextMeshProUGUI hpText;
     public TMPro.TextMeshProUGUI nameText;
@@ -35,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        enemyManager.cookieManager.cookies += data.rewardCookies;
+        CookieManager.Instance.cookies += data.rewardCookies;
         enemyManager.SpawnNextEnemy();
         Destroy(gameObject);
     }

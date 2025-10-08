@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ public class UpgradeUIManager : MonoBehaviour
 
     void Update()
     {
-        UpdateButtonStates(); // –ˆƒtƒŒ[ƒ€XV
+        UpdateButtonStates(); // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
     }
 
     void GenerateButtons()
@@ -50,24 +50,24 @@ public class UpgradeUIManager : MonoBehaviour
         for (int i = 0; i < upgradeDataList.upgrades.Length; i++)
         {
             var data = upgradeDataList.upgrades[i];
-            int level = upgradeManager.GetUpgradeLevel(i);
+            var level = upgradeManager.purchaseCounts[i];
             int cost = data.baseCost * (level + 1);
 
-            // ƒ‰ƒxƒ‹XV
+            // ãƒ©ãƒ™ãƒ«æ›´æ–°
             if (labels[i] != null)
             {
                 labels[i].text = $"{data.upgradeName}\n{data.description}\nCost: {cost}";
             }
 
-            // ƒ{ƒ^ƒ“‚ÌƒCƒ“ƒ^ƒ‰ƒNƒeƒBƒuXV
+            // ãƒœã‚¿ãƒ³ã®ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒ†ã‚£ãƒ–æ›´æ–°
             if (buttons[i] != null)
             {
-                if (!buttons[i].IsActive() && upgradeManager.cookieManager.cookies >= cost)
+                if (!buttons[i].IsActive() && CookieManager.Instance.cookies >= cost)
                 {
                     buttons[i].gameObject.SetActive(true);
                 }
 
-                buttons[i].interactable = upgradeManager.cookieManager.cookies >= cost;
+                buttons[i].interactable = CookieManager.Instance.cookies >= cost;
             }
         }
     }

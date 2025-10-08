@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>
 {
     public EnemyDataList enemyDataList; // ← ScriptableObject で複数管理
     public Transform spawnPoint;
-    public CookieManager cookieManager;
-    public GameObject fallbackEnemyPrefab;
+    public GameObject fallbackEnemyPrefab;//エネミーデータが無かった時使うプレファブ
 
     public Enemy currentEnemy;
-    private int waveCount = 0;
+    public int waveCount = 0;
 
     public void Start()
     {

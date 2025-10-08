@@ -1,23 +1,17 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 
-public class CookieManager : MonoBehaviour
+public class CookieManager : Singleton<CookieManager>
 {
+    public EnemyManager enemyManager; // ← 追加！
+
     public int cookies = 0;
     public float cookiesPerSecond = 0f;
-
-    public TMPro.TextMeshProUGUI cookieText;
-    public EnemyManager enemyManager; // ← 追加！
-    [SerializeField] Button clickButton;
+    public float cookiesPerClick = 1f;
 
     private float cookieBuffer = 0f;
 
-    private void Start()
-    {
-        clickButton.onClick.AddListener(() => OnClickCookie());
-    }
+
     void Update()
     {
         cookieBuffer += cookiesPerSecond * Time.deltaTime;
@@ -28,19 +22,6 @@ public class CookieManager : MonoBehaviour
             cookies += add;
             cookieBuffer -= add;
             enemyManager.currentEnemy.TakeDamage(add); // ここで攻撃
-        }
-
-        cookieText.text = "Cookies: " + cookies;
-    }
-
-    public void OnClickCookie()
-    {
-        cookies++;
-
-        // クリックと同時に攻撃処理
-        if (enemyManager != null && enemyManager.currentEnemy != null)
-        {
-            enemyManager.currentEnemy.TakeDamage(1); // ここで攻撃
         }
     }
 }

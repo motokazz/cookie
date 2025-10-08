@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewEnemyData", menuName = "Game/Enemy Data")]
 public class EnemyData : ScriptableObject
@@ -7,5 +7,5 @@ public class EnemyData : ScriptableObject
     public int maxHP;
     public int rewardCookies;
 
-    public GameObject enemyPrefab; // © Sprite‚Å‚Í‚È‚­Prefabi3Dƒ‚ƒfƒ‹j
+    public GameObject enemyPrefab; // â† Spriteã§ã¯ãªãPrefabï¼ˆ3Dãƒ¢ãƒ‡ãƒ«ï¼‰
 }

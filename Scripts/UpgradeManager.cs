@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
     public UpgradeDataList upgradeDataList;
-    public CookieManager cookieManager;
 
-    private int[] purchaseCounts;
+    public int[] purchaseCounts;
 
     void Start()
     {
@@ -16,21 +14,14 @@ public class UpgradeManager : MonoBehaviour
     public void TryBuyUpgrade(int index)
     {
         var data = upgradeDataList.upgrades[index];
-        int level = purchaseCounts[index];
+        var level = purchaseCounts[index];
         int cost = data.baseCost * (level + 1);
 
-        if (cookieManager.cookies >= cost)
+        if (CookieManager.Instance.cookies >= cost)
         {
-            cookieManager.cookies -= cost;
-            cookieManager.cookiesPerSecond += data.cpsIncrease;
+            CookieManager.Instance.cookies -= cost;
+            CookieManager.Instance.cookiesPerSecond += data.cpsIncrease;
             purchaseCounts[index]++;
         }
-    }
-
-    public int GetUpgradeLevel(int index)
-    {
-        if (index >= 0 && index < purchaseCounts.Length)
-            return purchaseCounts[index];
-        return 0;
     }
 }
