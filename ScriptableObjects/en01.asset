@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Cylinder
   maxHP: 200
-  rewardCookies: 200
+  rewardCookies: 0
   enemyPrefab: {fileID: 1368272893154843835, guid: 26c08d4398b12ad40985b558162b3cea, type: 3}

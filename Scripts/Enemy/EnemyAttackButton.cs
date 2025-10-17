@@ -20,7 +20,7 @@ public class EnemyAttackButton : MonoBehaviour
         // ƒNƒŠƒbƒN‚Æ“¯‚ÉUŒ‚ˆ—
         if (enemyManager != null && enemyManager.currentEnemy != null)
         {
-            enemyManager.currentEnemy.TakeDamage(Mathf.FloorToInt(cookieManager.cookiesPerClick)); // ‚±‚±‚ÅUŒ‚
+            enemyManager.TakeDamage(Mathf.FloorToInt(cookieManager.cookiesPerClick)); // ‚±‚±‚ÅUŒ‚
         }
     }
 }

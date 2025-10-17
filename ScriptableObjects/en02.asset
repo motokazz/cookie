@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Capsule
   maxHP: 300
-  rewardCookies: 300
+  rewardCookies: 0
   enemyPrefab: {fileID: 1368272893154843835, guid: 852095efb42a7e8479347bc32504dcbf, type: 3}

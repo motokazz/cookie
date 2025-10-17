@@ -10,22 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91b844240f61e8e42b5e296f4fe97e32, type: 3}
-  m_Name: UpgradeDataList
+  m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
   - upgradeName: aaa
     description: aaa
     baseCost: 10
+    currentCost: 0
     cpsIncrease: 1
+    cpsIncreaseTotal: 0
+    level: 0
   - upgradeName: bbb
     description: bbb
     baseCost: 100
+    currentCost: 0
     cpsIncrease: 10
-  - upgradeName: ccc
-    description: ccc
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: bbb
+    description: bbb
     baseCost: 1000
+    currentCost: 0
     cpsIncrease: 100
-  - upgradeName: ddd
-    description: ddd
-    baseCost: 10000
-    cpsIncrease: 1000
+    cpsIncreaseTotal: 0
+    level: 0
