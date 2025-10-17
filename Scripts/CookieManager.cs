@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-
+﻿using System;
+using UnityEngine;
 
 public class CookieManager : Singleton<CookieManager>
 {
@@ -9,7 +9,7 @@ public class CookieManager : Singleton<CookieManager>
     public float cookiesPerSecond = 0f;
     public float cookiesPerClick = 1f;
 
-    private float cookieBuffer = 0f;
+    private float cookieBuffer = 0f;//CPS更新用
 
 
     void Update()
@@ -21,7 +21,7 @@ public class CookieManager : Singleton<CookieManager>
             int add = Mathf.FloorToInt(cookieBuffer);
             cookies += add;
             cookieBuffer -= add;
-            enemyManager.currentEnemy.TakeDamage(add); // ここで攻撃
+            enemyManager.TakeDamage(add); // ここで攻撃
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿
+◆　クッキーコスト計算式ByGoogle
+**「基本コスト」× $1.15^(\(前回の購入数\))**
+
+◆　クッキーコスト増加量計算
+https://coderpatsy.bitbucket.io/cookies/cookies.html
+
+◆　日本語ページ
+https://w.atwiki.jp/cookieclickerjpn/pages/56.html
