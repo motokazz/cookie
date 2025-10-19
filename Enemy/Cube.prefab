@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 81b916e6c20dbf949a5fe9b644d3a8a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,7 +103,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 0}
   currentHP: 100
-  worldSpaceCanvas: {fileID: 0}
   hpText: {fileID: 414934706908742858}
   nameText: {fileID: 5731867925047784663}
 --- !u!1 &7266138703275400178
