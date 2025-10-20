@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Numerics;
 
 public class CsvImporterEditor : EditorWindow
 {
@@ -61,10 +62,10 @@ public class CsvImporterEditor : EditorWindow
             var upgradeData = new UpgradeData();
             upgradeData.upgradeName = each[0];
             upgradeData.description = each[1];
-            upgradeData.baseCost = int.Parse(each[2]);
-            upgradeData.currentCost = int.Parse(each[3]);
-            upgradeData.cpsIncrease = int.Parse(each[4]);
-            upgradeData.cpsIncreaseTotal = int.Parse(each[5]);
+            upgradeData.baseCost = float.Parse(each[2]);
+            upgradeData.currentCost = float.Parse(each[3]);
+            upgradeData.cpsIncrease = float.Parse(each[4]);
+            upgradeData.cpsIncreaseTotal = float.Parse(each[5]);
             upgradeData.level = int.Parse(each[6]);
 
             tempUpgrades.Add(upgradeData);

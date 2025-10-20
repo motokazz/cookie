@@ -29,11 +29,11 @@ public class DataManager : MonoBehaviour
 
         // ファイルを読み込んでdataに格納
         data = Load(filepath);
+        PutData();
     }
 
     private void Start()
     {
-        PutData();
         upgradeManager.InitUpgradeDataList();
     }
 
@@ -73,6 +73,7 @@ public class DataManager : MonoBehaviour
         data.cookiesPerSecond = CookieManager.Instance.cookiesPerSecond;
         data.upgradeLevels = upgradeManager.LevelsToArray();
         data.waveCount = enemyManager.waveCount;
+        data.enemyCurrentHP = enemyManager.currentEnemy.currentHP;
     }
 
     void PutData()
@@ -82,6 +83,7 @@ public class DataManager : MonoBehaviour
         CookieManager.Instance.cookiesPerSecond = data.cookiesPerSecond;
         upgradeManager.ArrayToLevels(data.upgradeLevels);
         enemyManager.waveCount = data.waveCount;
+        enemyManager.currentEnemy.currentHP = data.enemyCurrentHP;
     }
 
     public void ResetData()

@@ -13,24 +13,143 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - upgradeName: aaa
-    description: aaa
+  - upgradeName: Cursor
+    description: Cursor
     baseCost: 10
+    currentCost: 0
+    cpsIncrease: 0.1
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Grandma
+    description: Grandma
+    baseCost: 25
+    currentCost: 0
+    cpsIncrease: 0.25
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Farm
+    description: Farm
+    baseCost: 50
+    currentCost: 0
+    cpsIncrease: 0.5
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Mine
+    description: Mine
+    baseCost: 75
+    currentCost: 0
+    cpsIncrease: 0.75
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Factory
+    description: Factory
+    baseCost: 100
     currentCost: 0
     cpsIncrease: 1
     cpsIncreaseTotal: 0
     level: 0
-  - upgradeName: bbb
-    description: bbb
-    baseCost: 100
+  - upgradeName: Bank
+    description: Bank
+    baseCost: 250
+    currentCost: 0
+    cpsIncrease: 2.5
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Temple
+    description: Temple
+    baseCost: 500
+    currentCost: 0
+    cpsIncrease: 5
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: WizardTower
+    description: WizardTower
+    baseCost: 750
+    currentCost: 0
+    cpsIncrease: 7.5
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Shipment
+    description: Shipment
+    baseCost: 1000
     currentCost: 0
     cpsIncrease: 10
     cpsIncreaseTotal: 0
     level: 0
-  - upgradeName: bbb
-    description: bbb
-    baseCost: 1000
+  - upgradeName: AlchemyLab
+    description: AlchemyLab
+    baseCost: 2500
+    currentCost: 0
+    cpsIncrease: 25
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Portal
+    description: Portal
+    baseCost: 5000
+    currentCost: 0
+    cpsIncrease: 50
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: TimeMachine
+    description: TimeMachine
+    baseCost: 7500
+    currentCost: 0
+    cpsIncrease: 75
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: AntimatterCondenser
+    description: AntimatterCondenser
+    baseCost: 10000
     currentCost: 0
     cpsIncrease: 100
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Prism
+    description: Prism
+    baseCost: 25000
+    currentCost: 0
+    cpsIncrease: 250
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: ChanceMaker
+    description: ChanceMaker
+    baseCost: 50000
+    currentCost: 0
+    cpsIncrease: 500
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: FractalEngine
+    description: FractalEngine
+    baseCost: 75000
+    currentCost: 0
+    cpsIncrease: 750
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: JavascriptConsole
+    description: JavascriptConsole
+    baseCost: 100000
+    currentCost: 0
+    cpsIncrease: 1000
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: Idleverse
+    description: Idleverse
+    baseCost: 250000
+    currentCost: 0
+    cpsIncrease: 2500
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: ContexBaker
+    description: ContexBaker
+    baseCost: 500000
+    currentCost: 0
+    cpsIncrease: 5000
+    cpsIncreaseTotal: 0
+    level: 0
+  - upgradeName: You
+    description: You
+    baseCost: 750000
+    currentCost: 0
+    cpsIncrease: 7500
     cpsIncreaseTotal: 0
     level: 0

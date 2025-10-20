@@ -13,13 +13,19 @@ MonoBehaviour:
   m_Name: EnemyDataList
   m_EditorClassIdentifier: 
   enemyList:
-  - {fileID: 11400000, guid: e970c3bb07c8fbe43a71b939d89cbbe5, type: 2}
-  - {fileID: 11400000, guid: 8dc7c247422c8a84dafe12bc6143ffa0, type: 2}
-  - {fileID: 11400000, guid: 9fc8f45131e5aa44791b57caf62e1e30, type: 2}
-  - {fileID: 11400000, guid: 818d2fa84ab73e24e8e3b4d2044c8ae1, type: 2}
-  - {fileID: 11400000, guid: e970c3bb07c8fbe43a71b939d89cbbe5, type: 2}
-  - {fileID: 11400000, guid: 8dc7c247422c8a84dafe12bc6143ffa0, type: 2}
-  - {fileID: 11400000, guid: 9fc8f45131e5aa44791b57caf62e1e30, type: 2}
-  - {fileID: 11400000, guid: 818d2fa84ab73e24e8e3b4d2044c8ae1, type: 2}
-  - {fileID: 11400000, guid: e970c3bb07c8fbe43a71b939d89cbbe5, type: 2}
-  - {fileID: 11400000, guid: 8dc7c247422c8a84dafe12bc6143ffa0, type: 2}
+  - enemyName: capsule
+    maxHP: 100
+    rewardCookies: 0
+    enemyPrefab: {fileID: 1368272893154843835, guid: 852095efb42a7e8479347bc32504dcbf, type: 3}
+  - enemyName: cube
+    maxHP: 1000
+    rewardCookies: 0
+    enemyPrefab: {fileID: 1368272893154843835, guid: aa99c358ab634ee468ad98c14829a408, type: 3}
+  - enemyName: cylinder
+    maxHP: 10000
+    rewardCookies: 0
+    enemyPrefab: {fileID: 1368272893154843835, guid: 26c08d4398b12ad40985b558162b3cea, type: 3}
+  - enemyName: sphere
+    maxHP: 100000
+    rewardCookies: 0
+    enemyPrefab: {fileID: 1368272893154843835, guid: 09871473b04196a4fa911a5542e46b26, type: 3}

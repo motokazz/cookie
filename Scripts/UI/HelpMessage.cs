@@ -10,7 +10,7 @@ public class HelpMessage:MonoBehaviour
     BalloonDialog balloonDialog;
     Coroutine coroutine;
     Coroutine hideCoroutine;
-    bool exitFlag = false;
+
     private void Awake()
     {
         balloonDialog = FindAnyObjectByType<BalloonDialog>();

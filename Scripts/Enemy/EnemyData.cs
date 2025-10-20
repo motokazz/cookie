@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewEnemyData", menuName = "Game/Enemy Data")]
-public class EnemyData : ScriptableObject
+[System.Serializable]
+public class EnemyData
 {
     public string enemyName;
-    public int maxHP;
-    public int rewardCookies;
-
-    public GameObject enemyPrefab; // ← SpriteではなくPrefab（3Dモデル）
+    public double maxHP;
+    public double rewardCookies;
+    public GameObject enemyPrefab;
 }

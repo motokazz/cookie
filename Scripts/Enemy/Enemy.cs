@@ -6,7 +6,7 @@ using TMPro;
 public class Enemy : MonoBehaviour
 {
     public EnemyData data;
-    public int currentHP;
+    public double currentHP;
 
     public TMP_Text hpText;
     public TMP_Text nameText;
