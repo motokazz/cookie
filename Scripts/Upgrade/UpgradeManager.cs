@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -23,9 +24,10 @@ public class UpgradeManager : MonoBehaviour
 
     private void Start()
     {
-        InitUpgradeDataList();
+        //InitUpgradeDataList();
     }
 
+    // UpgradeDataList初期化
     public void InitUpgradeDataList()
     {
         for (int i = 0; i< upgradeDataList.upgrades.Count;i++)
@@ -35,23 +37,25 @@ public class UpgradeManager : MonoBehaviour
             upgradeDataList.upgrades[i].cpsIncreaseTotal = CPSCalc(data.cpsIncrease,data.level);
         }
     }
-
-    int CostCalc(int baseCost, int level)
+    // コスト計算
+    int CostCalc(double baseCost, int level)
     {
-        float temp = baseCost * MathF.Pow(upgradeCostRatio , level);
+        var temp = baseCost * MathF.Pow(upgradeCostRatio, level);
         return (int)temp;
     }
 
+    // CPS計算
     float CPSCalc(float cpsIncrease, int level)
     {
         float temp = cpsIncrease * level * cpsIncreaseRatio;
         return temp;
     }
 
+    // アップグレード購入
     public void TryBuyUpgrade(int index)
     {
         var data = upgradeDataList.upgrades[index];
-        int cost = data.currentCost;
+        var cost = data.currentCost;
 
         if (CookieManager.Instance.cookies >= cost)
         {
@@ -65,7 +69,7 @@ public class UpgradeManager : MonoBehaviour
             CookieManager.Instance.cookiesPerSecond += data.cpsIncrease * cpsIncreaseRatio;
         }
     }
-
+    // アップグレードレベル配列をupgradeDataListに代入
     public void ArrayToLevels(int[] upgradeLevels)
     {
         for (int i = 0; i < upgradeLevels.Length; i++)
@@ -74,6 +78,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    // UpgradeDataListのレベルを配列に変換
     public int[] LevelsToArray()
     {
         List<int> temp = new List<int>();

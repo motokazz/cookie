@@ -11,9 +11,9 @@ public class EnemyManager : MonoBehaviour
     [Header("エネミーデータが無かった時使うプレファブ")]
     [SerializeField] GameObject fallbackEnemyPrefab;
 
-    [NonSerialized] public Enemy currentEnemy;
 
-    [NonSerialized] public int waveCount = 0;
+    [NonSerialized] public Enemy currentEnemy;
+    [NonSerialized] public int waveCount = 1;
 
     private GameObject currentEnemyObj;
 
@@ -25,7 +25,7 @@ public class EnemyManager : MonoBehaviour
 
     public void SpawnNextEnemy()
     {
-        waveCount++;
+
 
         if (enemyDataList == null || enemyDataList.enemyList.Length == 0)
         {
@@ -57,6 +57,7 @@ public class EnemyManager : MonoBehaviour
     {
         currentEnemy.data = enemyData;
         currentEnemy.currentHP = currentEnemy.data.maxHP;
+
         //UI
         if (currentEnemy.hpText != null) currentEnemy.hpText.text = $"HP: {currentEnemy.currentHP}";
         if (currentEnemy.nameText != null) currentEnemy.nameText.text = currentEnemy.data.enemyName;
@@ -86,12 +87,15 @@ public class EnemyManager : MonoBehaviour
         
         Destroy(currentEnemyObj);
 
+        waveCount++;
+
         SpawnNextEnemy();
+
     }
 
     public void ResetEnemy()
     {
-        waveCount = 0;
+        waveCount = 1;
         Destroy(currentEnemyObj);
         SpawnNextEnemy();
     }

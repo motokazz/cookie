@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Numerics;
 using UnityEngine;
 
 public class CookieManager : Singleton<CookieManager>
 {
     public EnemyManager enemyManager; // ← 追加！
 
-    public int cookies = 0;
+    public double cookies = 0;
     public float cookiesPerSecond = 0f;
     public float cookiesPerClick = 1f;
 
