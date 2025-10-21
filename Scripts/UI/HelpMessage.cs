@@ -5,11 +5,8 @@ using UnityEngine.UI;
 public class HelpMessage:MonoBehaviour
 {
     public string message;
-    [SerializeField] float fadeInWait = 1.0f;
-    [SerializeField] float fadeOutWait = 1.0f;
+    
     BalloonDialog balloonDialog;
-    Coroutine coroutine;
-    Coroutine hideCoroutine;
 
     private void Awake()
     {

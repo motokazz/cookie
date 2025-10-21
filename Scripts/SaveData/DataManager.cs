@@ -1,7 +1,4 @@
 ﻿using System.IO;
-using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEditor.Overlays;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -29,11 +26,12 @@ public class DataManager : MonoBehaviour
 
         // ファイルを読み込んでdataに格納
         data = Load(filepath);
-        PutData();
+        
     }
 
     private void Start()
     {
+        PutData();
         upgradeManager.InitUpgradeDataList();
     }
 
@@ -66,40 +64,56 @@ public class DataManager : MonoBehaviour
         Save(data);
     }
 
+    // ゲーム中のデータを取得
     void GetData()
     {
+        // メイン
         data.cookies = CookieManager.Instance.cookies;
         data.cookiesPerClick = CookieManager.Instance.cookiesPerClick;
         data.cookiesPerSecond = CookieManager.Instance.cookiesPerSecond;
+
+        // Upgrade関連
         data.upgradeLevels = upgradeManager.LevelsToArray();
+
+        // Enemy関連
         data.waveCount = enemyManager.waveCount;
         data.enemyCurrentHP = enemyManager.currentEnemy.currentHP;
     }
 
+    // ゲームにロードデータを反映
     void PutData()
     {
+        // メイン
         CookieManager.Instance.cookies = data.cookies;
         CookieManager.Instance.cookiesPerClick = data.cookiesPerClick;
         CookieManager.Instance.cookiesPerSecond = data.cookiesPerSecond;
+
+        // Upgrade関連
         upgradeManager.ArrayToLevels(data.upgradeLevels);
+
+        // Enemy関連
         enemyManager.waveCount = data.waveCount;
         enemyManager.currentEnemy.currentHP = data.enemyCurrentHP;
     }
 
+    // データを初期化
     public void ResetData()
     {
+        // メイン
         data.cookies = 0;
         data.cookiesPerClick = 1f;
         data.cookiesPerSecond = 0f;
+
+        // Upgrade関連
         data.upgradeLevels = new int[upgradeManager.upgradeDataList.upgrades.Count];
         
+        // 初期化したデータを保存
         PutData();
-        
-
         Save(data);
 
-        upgradeUIManager.RessetButtons();
+        // 各マネージャリセット
         enemyManager.ResetEnemy();
         upgradeManager.InitUpgradeDataList();
+        upgradeUIManager.RessetButtons();
     }
 }
