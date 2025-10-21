@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -16,6 +17,8 @@ public class EnemyManager : MonoBehaviour
     [NonSerialized] public int waveCount = 1;
 
     private GameObject currentEnemyObj;
+    private Coroutine coroutine;
+
 
     public void Start()
     {
@@ -82,6 +85,7 @@ public class EnemyManager : MonoBehaviour
     // 死亡
     void Die()
     {
+        Debug.Log("Die");
         //勝利ボーナス
         CookieManager.Instance.cookies += currentEnemy.data.rewardCookies;
         
@@ -90,7 +94,13 @@ public class EnemyManager : MonoBehaviour
         waveCount++;
 
         SpawnNextEnemy();
-
+        /*
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(WaitSpawnNext());
+        */
     }
 
     public void ResetEnemy()
@@ -99,4 +109,11 @@ public class EnemyManager : MonoBehaviour
         Destroy(currentEnemyObj);
         SpawnNextEnemy();
     }
+
+    IEnumerator WaitSpawnNext()
+    {
+        yield return new WaitForSeconds(2f);
+        SpawnNextEnemy();
+    }
+
 }

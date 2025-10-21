@@ -22,11 +22,6 @@ public class UpgradeManager : MonoBehaviour
         InitUpgradeDataList();
     }
 
-    private void Start()
-    {
-        //InitUpgradeDataList();
-    }
-
     // UpgradeDataList初期化
     public void InitUpgradeDataList()
     {
@@ -63,12 +58,16 @@ public class UpgradeManager : MonoBehaviour
             //コスト更新
             upgradeDataList.upgrades[index].currentCost = CostCalc(data.baseCost, data.level);
             upgradeDataList.upgrades[index].cpsIncreaseTotal = CPSCalc(data.cpsIncrease, data.level);
-            Debug.Log(upgradeDataList.upgrades[index].level);
 
             CookieManager.Instance.cookies -= cost;
             CookieManager.Instance.cookiesPerSecond += data.cpsIncrease * cpsIncreaseRatio;
         }
     }
+
+    // ==============================================
+    // セーブデータ用
+    // ==============================================
+
     // アップグレードレベル配列をupgradeDataListに代入
     public void ArrayToLevels(int[] upgradeLevels)
     {
