@@ -1,19 +1,24 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    public CookieManager cookieManager;
     public UpgradeManager upgradeManager;
     public UpgradeUIManager upgradeUIManager;
     public EnemyManager enemyManager;
 
     [HideInInspector] public SaveData data;     // json変換するデータのクラス
+
     string filepath;                            // jsonファイルのパス
     string fileName = "Data.json";              // jsonファイル名
 
-    //-------------------------------------------------------------------
+
+    // ===========================================
     // 開始時にファイルチェック、読み込み
-    void Awake()
+    // ===========================================
+    public void DataInit()
     {
         // パス名取得
         filepath = Application.dataPath + "/" + fileName;
@@ -21,56 +26,133 @@ public class DataManager : MonoBehaviour
         // ファイルがないとき、ファイル作成
         if (!File.Exists(filepath))
         {
-            Save(data);
+            Save();
         }
 
         // ファイルを読み込んでdataに格納
         data = Load(filepath);
-        
-    }
-
-    private void Start()
-    {
-        PutData();
+        //PutData();
         upgradeManager.InitUpgradeDataList();
+
     }
 
-    //-------------------------------------------------------------------
+
+    // ===========================================
     // jsonとしてデータを保存
-    public void Save(SaveData data)
+    // ===========================================
+
+
+
+
+    public void Save()
     {
         GetData();
         string json = JsonUtility.ToJson(data);                 // jsonとして変換
         StreamWriter wr = new StreamWriter(filepath, false);    // ファイル書き込み指定
         wr.WriteLine(json);                                     // json変換した情報を書き込み
         wr.Close();                                             // ファイル閉じる
+
+        SaveTest();
     }
+
+
+
 
     // jsonファイル読み込み
     SaveData Load(string path)
     {
+        LoadTest(path);
+        return data;
+        /*
         StreamReader rd = new StreamReader(path);               // ファイル読み込み指定
         string json = rd.ReadToEnd();                           // ファイル内容全て読み込む
         rd.Close();                                             // ファイル閉じる
-
         return JsonUtility.FromJson<SaveData>(json);            // jsonファイルを型に戻して返す
+        */
 
     }
 
-    //-------------------------------------------------------------------
-    // ゲーム終了時に保存
-    void OnDestroy()
+
+
+    public void SaveTest()
     {
-        Save(data);
+
+        string json = "";
+
+
+        json += "CookieManager";
+        json += "<SPLITTER>";
+        json += JsonUtility.ToJson(GameManager.Instance.cookieManager);
+        json += "\n";
+
+        json += "EnemyDataList";
+        json += "<SPLITTER>";
+        json += JsonUtility.ToJson(GameManager.Instance.enemyManager.enemyDataList);
+        json += "\n";
+        
+        json += "UpgradeDataList";
+        json += "<SPLITTER>";
+        json += JsonUtility.ToJson(GameManager.Instance.upgradeManager.upgradeDataList);
+        json += "\n";
+
+
+        StreamWriter wr = new StreamWriter(filepath, false);
+        wr.WriteLine(json);
+        wr.Close();
+
     }
 
-    // ゲーム中のデータを取得
+    void LoadTest(string path)
+    {
+        StreamReader rd = new StreamReader(path);
+        while (!rd.EndOfStream)
+        {
+            string temp = rd.ReadLine();
+            if (temp == "") { continue; }
+
+            var splitted = temp.Split("<SPLITTER>");
+
+            var tempClass = Activator.CreateInstance(Type.GetType(splitted[0]));
+
+            if (tempClass.GetType() == typeof(EnemyDataList))
+            {
+                EnemyDataList fj = new EnemyDataList();
+                JsonUtility.FromJsonOverwrite(splitted[1], fj);
+                GameManager.Instance.enemyManager.enemyDataList = fj;
+            }
+
+            if (tempClass.GetType() == typeof(UpgradeDataList))
+            {
+                UpgradeDataList fj = new UpgradeDataList();
+                JsonUtility.FromJsonOverwrite(splitted[1], fj);
+                GameManager.Instance.upgradeManager.upgradeDataList = fj;
+            }
+
+            if (tempClass.GetType() == typeof(CookieManager))
+            {
+                CookieManager fj = new CookieManager();
+                JsonUtility.FromJsonOverwrite(splitted[1], fj);
+                GameManager.Instance.cookieManager.cookies = fj.cookies;
+                GameManager.Instance.cookieManager.cookiesPerClick = fj.cookiesPerClick;
+                GameManager.Instance.cookieManager.cookiesPerSecond = fj.cookiesPerSecond;
+            }
+
+        }
+        rd.Close();
+    }
+
+
+    // ===========================================
+    // データパーサー
+    // ===========================================
+
+    // GameData -> TempData
     void GetData()
     {
         // メイン
-        data.cookies = CookieManager.Instance.cookies;
-        data.cookiesPerClick = CookieManager.Instance.cookiesPerClick;
-        data.cookiesPerSecond = CookieManager.Instance.cookiesPerSecond;
+        data.cookies = cookieManager.cookies;
+        data.cookiesPerClick = cookieManager.cookiesPerClick;
+        data.cookiesPerSecond = cookieManager.cookiesPerSecond;
 
         // Upgrade関連
         data.upgradeLevels = upgradeManager.LevelsToArray();
@@ -80,13 +162,13 @@ public class DataManager : MonoBehaviour
         data.enemyCurrentHP = enemyManager.currentEnemy.currentHP;
     }
 
-    // ゲームにロードデータを反映
-    void PutData()
+    // TempData -> GameData
+    public void PutData()
     {
         // メイン
-        CookieManager.Instance.cookies = data.cookies;
-        CookieManager.Instance.cookiesPerClick = data.cookiesPerClick;
-        CookieManager.Instance.cookiesPerSecond = data.cookiesPerSecond;
+        cookieManager.cookies = data.cookies;
+        cookieManager.cookiesPerClick = data.cookiesPerClick;
+        cookieManager.cookiesPerSecond = data.cookiesPerSecond;
 
         // Upgrade関連
         upgradeManager.ArrayToLevels(data.upgradeLevels);
@@ -109,7 +191,7 @@ public class DataManager : MonoBehaviour
         
         // 初期化したデータを保存
         PutData();
-        Save(data);
+        Save();
 
         // 各マネージャリセット
         enemyManager.ResetEnemy();

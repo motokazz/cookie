@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class UpgradeManager : MonoBehaviour
 {
-    public UpgradeDataList upgradeDataList_org;//元のUpgradeDataList
+
+    [SerializeField] CookieManager cookieManager;
+
+    [SerializeField] UpgradeDataList upgradeDataList_org;//元のUpgradeDataList
+    [HideInInspector] public UpgradeDataList upgradeDataList;//ゲーム中に使うUpgradeDataList
+
 
     [Header("アップグレードコスト倍率")]
     [SerializeField] float upgradeCostRatio = 1.15f;
     [SerializeField] float cpsIncreaseRatio = 1.15f;
 
-    [HideInInspector]
-    public UpgradeDataList upgradeDataList;//ゲーム中に使うUpgradeDataList
+    //Addressable読み込み用
+    AsyncOperationHandle<GameObject> operationHandle;
 
 
     void Awake()
@@ -22,7 +27,11 @@ public class UpgradeManager : MonoBehaviour
         InitUpgradeDataList();
     }
 
+
+    // ===========================================
     // UpgradeDataList初期化
+    // ===========================================
+
     public void InitUpgradeDataList()
     {
         for (int i = 0; i< upgradeDataList.upgrades.Count;i++)
@@ -32,6 +41,45 @@ public class UpgradeManager : MonoBehaviour
             upgradeDataList.upgrades[i].cpsIncreaseTotal = CPSCalc(data.cpsIncrease,data.level);
         }
     }
+
+
+    // ===========================================
+    // アップグレード購入
+    // ===========================================
+
+    public void TryBuyUpgrade(int index)
+    {
+        var data = upgradeDataList.upgrades[index];
+        var cost = data.currentCost;
+
+        if (cookieManager.cookies >= cost)
+        {
+            upgradeDataList.upgrades[index].level++;
+            //コスト更新
+            upgradeDataList.upgrades[index].currentCost = CostCalc(data.baseCost, data.level);
+            upgradeDataList.upgrades[index].cpsIncreaseTotal = CPSCalc(data.cpsIncrease, data.level);
+
+            cookieManager.cookies -= cost;
+            cookieManager.cookiesPerSecond += data.cpsIncrease * cpsIncreaseRatio;
+
+            //NPC作成
+            string key = upgradeDataList.upgrades[index].prefab;
+            Debug.Log(key);
+            //key = "human";
+            operationHandle = Addressables.LoadAssetAsync<GameObject>(key);
+            if (operationHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject obj = operationHandle.Result;
+                Instantiate(obj, transform);
+            }
+        }
+    }
+
+
+    // ===========================================
+    // 計算
+    // ===========================================
+
     // コスト計算
     int CostCalc(double baseCost, int level)
     {
@@ -46,23 +94,6 @@ public class UpgradeManager : MonoBehaviour
         return temp;
     }
 
-    // アップグレード購入
-    public void TryBuyUpgrade(int index)
-    {
-        var data = upgradeDataList.upgrades[index];
-        var cost = data.currentCost;
-
-        if (CookieManager.Instance.cookies >= cost)
-        {
-            upgradeDataList.upgrades[index].level++;
-            //コスト更新
-            upgradeDataList.upgrades[index].currentCost = CostCalc(data.baseCost, data.level);
-            upgradeDataList.upgrades[index].cpsIncreaseTotal = CPSCalc(data.cpsIncrease, data.level);
-
-            CookieManager.Instance.cookies -= cost;
-            CookieManager.Instance.cookiesPerSecond += data.cpsIncrease * cpsIncreaseRatio;
-        }
-    }
 
     // ==============================================
     // セーブデータ用
@@ -87,4 +118,6 @@ public class UpgradeManager : MonoBehaviour
         }
         return temp.ToArray();
     }
+
+
 }
