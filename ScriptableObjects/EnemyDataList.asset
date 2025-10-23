@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyList:
   - enemyName: capsule
-    maxHP: 100
+    maxHP: 10
     rewardCookies: 0
     enemyPrefab: {fileID: 1368272893154843835, guid: 852095efb42a7e8479347bc32504dcbf, type: 3}
   - enemyName: cube
-    maxHP: 1000
+    maxHP: 10
     rewardCookies: 0
     enemyPrefab: {fileID: 1368272893154843835, guid: aa99c358ab634ee468ad98c14829a408, type: 3}
   - enemyName: cylinder
-    maxHP: 10000
+    maxHP: 10
     rewardCookies: 0
     enemyPrefab: {fileID: 1368272893154843835, guid: 26c08d4398b12ad40985b558162b3cea, type: 3}
   - enemyName: sphere
-    maxHP: 100000
+    maxHP: 10
     rewardCookies: 0
     enemyPrefab: {fileID: 1368272893154843835, guid: 09871473b04196a4fa911a5542e46b26, type: 3}

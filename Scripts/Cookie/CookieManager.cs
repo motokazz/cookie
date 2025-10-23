@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Numerics;
 using UnityEngine;
 
-public class CookieManager : Singleton<CookieManager>
+public class CookieManager : MonoBehaviour
 {
-    public EnemyManager enemyManager; // ← 追加！
-
     public double cookies = 0;
     public float cookiesPerSecond = 0f;
     public float cookiesPerClick = 1f;
@@ -22,7 +19,6 @@ public class CookieManager : Singleton<CookieManager>
             int add = Mathf.FloorToInt(cookieBuffer);
             cookies += add;
             cookieBuffer -= add;
-            enemyManager.TakeDamage(add); // ここで攻撃
         }
     }
 }

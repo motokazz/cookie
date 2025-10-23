@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -33,17 +33,17 @@ public class CsvImporterEditor : EditorWindow
     void CsvDataToScritableObject()
     {
 
-        // ƒp[ƒX‚ğÀs
+        // ãƒ‘ãƒ¼ã‚¹ã‚’å®Ÿè¡Œ
         if (csvFile == null)
         {
-            Debug.LogWarning(csvFile.name + " : “Ç‚İ‚ŞCSVƒtƒ@ƒCƒ‹‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+            Debug.LogWarning(csvFile.name + " : èª­ã¿è¾¼ã‚€CSVãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
             return;
         }
 
-        // csvƒtƒ@ƒCƒ‹‚ğstringŒ`®‚É•ÏŠ·
+        // csvãƒ•ã‚¡ã‚¤ãƒ«ã‚’stringå½¢å¼ã«å¤‰æ›
         string csvText = csvFile.text;
 
-        // ‰üs‚²‚Æ‚Éƒp[ƒX
+        // æ”¹è¡Œã”ã¨ã«ãƒ‘ãƒ¼ã‚¹
         List<string> afterParse;
         afterParse = new List<string>(csvText.Split("\n"));
         afterParse.RemoveAt(0);
@@ -67,6 +67,7 @@ public class CsvImporterEditor : EditorWindow
             upgradeData.cpsIncrease = float.Parse(each[4]);
             upgradeData.cpsIncreaseTotal = float.Parse(each[5]);
             upgradeData.level = int.Parse(each[6]);
+            upgradeData.prefab = each[7];
 
             tempUpgrades.Add(upgradeData);
         }
@@ -76,20 +77,20 @@ public class CsvImporterEditor : EditorWindow
 
 
 
-        // ƒCƒ“ƒXƒ^ƒ“ƒX‰»‚µ‚½‚à‚Ì‚ğƒAƒZƒbƒg‚Æ‚µ‚Ä•Û‘¶
+        // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã—ãŸã‚‚ã®ã‚’ã‚¢ã‚»ãƒƒãƒˆã¨ã—ã¦ä¿å­˜
         var asset = (UpgradeDataList)AssetDatabase.LoadAssetAtPath(path, typeof(UpgradeDataList));
         if (asset == null)
         {
-            // w’è‚ÌƒpƒX‚Éƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍV‹Kì¬
+            // æŒ‡å®šã®ãƒ‘ã‚¹ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯æ–°è¦ä½œæˆ
             AssetDatabase.CreateAsset(data, path);
         }
         else
         {
-            // w’è‚ÌƒpƒX‚ÉŠù‚É“¯–¼‚Ìƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚éê‡‚ÍXV
+            // æŒ‡å®šã®ãƒ‘ã‚¹ã«æ—¢ã«åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯æ›´æ–°
             EditorUtility.CopySerialized(data, asset);
             AssetDatabase.SaveAssets();
         }
         AssetDatabase.Refresh();
-        Debug.Log(" ƒf[ƒ^‚Ìì¬‚ªŠ®—¹‚µ‚Ü‚µ‚½B");
+        Debug.Log(" ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆãŒå®Œäº†ã—ã¾ã—ãŸã€‚");
     }
 }

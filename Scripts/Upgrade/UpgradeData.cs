@@ -1,5 +1,6 @@
-using System.Numerics;
+﻿using System.Numerics;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [System.Serializable]
 public class UpgradeData
@@ -14,4 +15,6 @@ public class UpgradeData
     public float cpsIncreaseTotal;
 
     public int level;
+
+    public string prefab;
 }

@@ -6,7 +6,8 @@ using Unity.VisualScripting;
 
 public class UpgradeUIManager : MonoBehaviour
 {
-    public UpgradeManager upgradeManager;
+    CookieManager cookieManager;
+    [SerializeField] UpgradeManager upgradeManager;
 
     public GameObject buttonPrefab;
     public Transform buttonParent;
@@ -17,6 +18,7 @@ public class UpgradeUIManager : MonoBehaviour
     void Start()
     {
         GenerateButtons();
+        cookieManager = GameManager.Instance.cookieManager;
     }
 
     void Update()
@@ -72,6 +74,7 @@ public class UpgradeUIManager : MonoBehaviour
         {
             var data = upgradeManager.upgradeDataList.upgrades[i];
             var cost = data.currentCost;
+
             // ラベル更新
             if (labels[i] != null)
             {
@@ -84,18 +87,18 @@ public class UpgradeUIManager : MonoBehaviour
                 // ボタンのアクティブ状態
                 if (!buttons[i].IsActive())
                 {
-                    if (data.level > 0 || CookieManager.Instance.cookies >= cost)
+                    if (data.level > 0 || cookieManager.cookies >= cost)
                     {
                         buttons[i].gameObject.SetActive(true);
                     }
                 }
 
                 // ボタンのインタラクティブ状態
-                buttons[i].interactable = CookieManager.Instance.cookies >= cost;
+                buttons[i].interactable = cookieManager.cookies >= cost;
             }
 
             // ボタンの進捗をゲージ更新
-            ButtonValue(buttons[i], (float)cost, (float)CookieManager.Instance.cookies);
+            ButtonValue(buttons[i], (float)cost, (float)cookieManager.cookies);
         }
     }
 
