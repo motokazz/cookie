@@ -17,6 +17,7 @@ public class EnemyManager : MonoBehaviour
     [Header("次のエネミーが出てくるまでのインターバル")]
     [SerializeField] float spawnInterval=1.0f;
 
+
     //
     [NonSerialized] public Enemy currentEnemy;
     [NonSerialized] public int waveCount = 1;
@@ -28,11 +29,16 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
-        currentEnemy = new Enemy();
+        currentEnemy =gameObject.AddComponent<Enemy>();
     }
+
+
+    // ===========================================
+    // スポーン処理
+    // ===========================================
+
     public void SpawnNextEnemy()
     {
-
 
         if (enemyDataList == null || enemyDataList.enemyList.Length == 0)
         {
@@ -42,25 +48,33 @@ public class EnemyManager : MonoBehaviour
 
         // 敵を順番にまたはランダムに選出
         int index = (waveCount - 1) % enemyDataList.enemyList.Length;
+        index = 0;
         EnemyData selected = enemyDataList.enemyList[index];
 
         // 敵プレファブ見つからなかったら予備プレファブ
         GameObject prefab = selected.enemyPrefab != null ? selected.enemyPrefab : fallbackEnemyPrefab;
 
         // スポーン
-        //Vector3 spawnPos = spawnPoint != null ? spawnPoint.position : Vector3.zero;
-        Vector3 spawnPos = spawnPoint != null ? GetSpawnVolume() : Vector3.zero;
-        currentEnemyObj = Instantiate(prefab, spawnPos, Quaternion.identity);
+        Vector3 spawnPos = spawnPoint != null ? GetRandomPositionInSpawnVolume() : Vector3.zero;
+        currentEnemyObj = Instantiate(prefab, spawnPos , Quaternion.identity);
 
         // Enemyコンポーネント取得
         currentEnemy = currentEnemyObj.GetComponent<Enemy>();
 
         //エネミーコンポーネントを初期化
         Initialize(selected);
+
+    }
+    
+    
+    IEnumerator WaitSpawnNext()
+    {
+        yield return new WaitForSeconds(spawnInterval);
+        SpawnNextEnemy();
     }
 
     // volume内の点をランダムに抽出
-    Vector3 GetSpawnVolume()
+    Vector3 GetRandomPositionInSpawnVolume()
     {
         Vector3 rnd = Vector3.zero;
         if (spawnVolume != null)
@@ -91,6 +105,7 @@ public class EnemyManager : MonoBehaviour
 
         return rnd;
     }
+    
     // EnemyData初期化
     void Initialize(EnemyData enemyData)
     {
@@ -124,7 +139,6 @@ public class EnemyManager : MonoBehaviour
     // 死亡
     void Die()
     {
-        Debug.Log("Die");
         //勝利ボーナス
         GameManager.Instance.cookieManager.cookies += currentEnemy.data.rewardCookies;
         
@@ -140,18 +154,4 @@ public class EnemyManager : MonoBehaviour
         coroutine = StartCoroutine(WaitSpawnNext());
         
     }
-
-    public void ResetEnemy()
-    {
-        waveCount = 1;
-        Destroy(currentEnemyObj);
-        SpawnNextEnemy();
-    }
-
-    IEnumerator WaitSpawnNext()
-    {
-        yield return new WaitForSeconds(spawnInterval);
-        SpawnNextEnemy();
-    }
-
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,23 +32,47 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        cookieManager = cookieManagerX;
-        upgradeManager = upgradeManagerX;
-        upgradeUIManager = upgradeUIManagerX;
-        enemyManager = enemyManagerX;
-        dataManager = dataManagerX;
+        // 初期化
+        Init();
     }
 
     private void Start()
     {
-        dataManager.DataInit();
+        dataManager.Init();
         enemyManager.SpawnNextEnemy();
-        //dataManager.PutData();
     }
 
     // ゲーム終了時に保存
     void OnDestroy()
     {
         dataManager.Save();
+    }
+
+    public void Init()
+    {
+        cookieManager = cookieManagerX;
+        upgradeManager = upgradeManagerX;
+        upgradeUIManager = upgradeUIManagerX;
+        enemyManager = enemyManagerX;
+        dataManager = dataManagerX;
+
+        cookieManager.Init();
+
+        upgradeManager.Init();
+
+        upgradeUIManager.RessetButtons();
+
+        enemyManager.waveCount = 1;
+
+    }
+
+
+
+
+
+    public void Checker()
+    {
+        Debug.Log(enemyManager.currentEnemy);
+        enemyManager.SpawnNextEnemy();
     }
 }
