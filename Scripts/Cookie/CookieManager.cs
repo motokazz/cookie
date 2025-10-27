@@ -21,4 +21,11 @@ public class CookieManager : MonoBehaviour
             cookieBuffer -= add;
         }
     }
+
+    public void Init()
+    {
+        cookies = 0;
+        cookiesPerSecond = 0f;
+        cookiesPerClick = 1f;
+    }
 }

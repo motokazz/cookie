@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-
+﻿
 [System.Serializable]
 public class UpgradeData
 {

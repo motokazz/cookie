@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.AI; // NavMesh Agentを使うために必要
 
-public class EnemyAI : MonoBehaviour
+public class NPCAI : MonoBehaviour
 {
     // 公開変数
     [SerializeField] Animator animator;
-    public Transform target; // 追跡するターゲット（プレイヤーなど）
-    public float attackRange = 2f; // 攻撃できる距離
-    public float attackInterval = 2f; // 攻撃の間隔
-    [SerializeField] float attackBuffer = 0.5f;
+    [SerializeField] Transform target; // 追跡するターゲット（プレイヤーなど）
+    [SerializeField] float attackRange = 2f; // 攻撃できる距離
+    [SerializeField] float attackInterval = 2f; // 攻撃の間隔
+    [SerializeField] float attackMultiply = 100f;
+
     // 非公開変数
+    float attackBuffer = 0f;
+
     private NavMeshAgent agent;
     private float timeSinceLastAttack = 0f;
 
@@ -21,6 +24,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        // currentEnemyいたらターゲット設定
         if(GameManager.Instance.enemyManager.currentEnemy != null)
         {
             target = GameManager.Instance.enemyManager.currentEnemy.transform;
@@ -57,10 +61,10 @@ public class EnemyAI : MonoBehaviour
         }
 
     }
-    void AttackValue()
+    void Attack()
     {
-        attackBuffer += GameManager.Instance.cookieManager.cookiesPerSecond * Time.deltaTime;
-
+        animator.SetTrigger("Attack");
+        attackBuffer += GameManager.Instance.cookieManager.cookiesPerSecond * Time.deltaTime * attackMultiply;
         if (attackBuffer >= 1f)
         {
             int add = Mathf.FloorToInt(attackBuffer);
@@ -68,12 +72,5 @@ public class EnemyAI : MonoBehaviour
             GameManager.Instance.enemyManager.TakeDamage(add); // ここで攻撃
         }
     }
-    void Attack()
-    {
-        animator.SetTrigger("Attack");
-        int add = (int)GameManager.Instance.cookieManager.cookiesPerSecond;
-        GameManager.Instance.enemyManager.TakeDamage(add);
-        //Debug.Log("攻撃！");
-        // 攻撃アニメーションの再生、ダメージ処理などをここに追加
-    }
+
 }

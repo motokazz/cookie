@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d943f4c613490b346b01be68eefe462b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcList:
+  - npcName: Cursor
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Grandma
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Farm
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Mine
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Factory
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Bank
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Temple
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: WizardTower
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Shipment
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: AlchemyLab
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Portal
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: TimeMachine
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: AntimatterCondenser
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Prism
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: ChanceMaker
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: FractalEngine
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: JavascriptConsole
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: Idleverse
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: ContexBaker
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100
+  - npcName: You
+    attackRange: 2
+    attackInterval: 2
+    attackMultiply: 100

@@ -2,16 +2,18 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+
 
 public class UpgradeUIManager : MonoBehaviour
 {
-    CookieManager cookieManager;
+    
     [SerializeField] UpgradeManager upgradeManager;
 
     public GameObject buttonPrefab;
     public Transform buttonParent;
 
+    //
+    private CookieManager cookieManager;
     private List<Button> buttons = new List<Button>();
     private List<TextMeshProUGUI> labels = new List<TextMeshProUGUI>();
 
