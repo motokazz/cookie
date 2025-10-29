@@ -7,15 +7,14 @@ using System.Collections.Generic;
 public class UpgradeUIManager : MonoBehaviour
 {
     
-    [SerializeField] UpgradeManager upgradeManager;
-
-    public GameObject buttonPrefab;
-    public Transform buttonParent;
+    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private Transform buttonParent;
 
     //
     private CookieManager cookieManager;
     private List<Button> buttons = new List<Button>();
     private List<TextMeshProUGUI> labels = new List<TextMeshProUGUI>();
+
 
     void Start()
     {
@@ -31,6 +30,7 @@ public class UpgradeUIManager : MonoBehaviour
     //ボタン作成
     void GenerateButtons()
     {
+        var upgradeManager = GameManager.Instance.upgradeManager;
         buttons = new List<Button>();
         labels = new List<TextMeshProUGUI>();
 
@@ -72,6 +72,7 @@ public class UpgradeUIManager : MonoBehaviour
     //ボタン更新
     void UpdateButtonStates()
     {
+        var upgradeManager = GameManager.Instance.upgradeManager;
         for (int i = 0; i < upgradeManager.upgradeDataList.upgrades.Count; i++)
         {
             var data = upgradeManager.upgradeDataList.upgrades[i];
@@ -113,7 +114,7 @@ public class UpgradeUIManager : MonoBehaviour
 
 
     // ボタンの状態をリセット
-    public void RessetButtons()
+    public void Init()
     {
         foreach (Transform n in buttonParent)
         {

@@ -12,12 +12,11 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] float upgradeCostRatio = 1.15f;
     [SerializeField] float cpsIncreaseRatio = 1.15f;
 
-    NPCSpawn nPCSpawn;
+    AddressableSpawn addressableSpawn = new ();
 
     void Awake()
     {
         Init();
-        
     }
 
 
@@ -27,6 +26,7 @@ public class UpgradeManager : MonoBehaviour
 
     public void Init()
     {
+        
         upgradeDataList = Instantiate(upgradeDataList_org);
         for (int i = 0; i< upgradeDataList.upgrades.Count;i++)
         {
@@ -43,24 +43,25 @@ public class UpgradeManager : MonoBehaviour
 
     public void TryBuyUpgrade(int index)
     {
-        var gm = GameManager.Instance;
-        var data = upgradeDataList.upgrades[index];
-        var cost = data.currentCost;
+        var cookieManager = GameManager.Instance.cookieManager;
+        var upgrade = GameManager.Instance.upgradeManager.upgradeDataList.upgrades[index];
+        var cost = upgrade.currentCost;
 
-        if (gm.cookieManager.cookies >= cost)
+        if (cookieManager.cookies >= cost)
         {
-            upgradeDataList.upgrades[index].level++;
-            //コスト更新
-            upgradeDataList.upgrades[index].currentCost = CostCalc(data.baseCost, data.level);
-            upgradeDataList.upgrades[index].cpsIncreaseTotal = CPSCalc(data.cpsIncrease, data.level);
+            // アップグレードレベル更新
+            upgrade.level++;
 
-            gm.cookieManager.cookies -= cost;
-            gm.cookieManager.cookiesPerSecond += data.cpsIncrease * cpsIncreaseRatio;
+            //コスト更新
+            upgrade.currentCost = CostCalc(upgrade.baseCost, upgrade.level);
+            upgrade.cpsIncreaseTotal = CPSCalc(upgrade.cpsIncrease, upgrade.level);
+
+            cookieManager.cookies -= cost;
+            cookieManager.cookiesPerSecond += upgrade.cpsIncrease * cpsIncreaseRatio;
 
             //NPC作成
             string key = upgradeDataList.upgrades[index].prefab;
-            NPCSpawn nPCSpawn = new NPCSpawn();
-            nPCSpawn.Spawn(key);
+            addressableSpawn.SpawnAsync(key);
         }
     }
 

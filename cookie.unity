@@ -2910,7 +2910,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyDataList: {fileID: 11400000, guid: 1bbb51f14ef4f3e45b241739651ecc8a, type: 2}
-  spawnPoint: {fileID: 703143705}
   spawnVolume: {fileID: 1370033000}
   fallbackEnemyPrefab: {fileID: 1368272893154843835, guid: aa99c358ab634ee468ad98c14829a408, type: 3}
   spawnInterval: 5
@@ -3472,7 +3471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9342a845a36a53d48a129bd26f6c15cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookieManager: {fileID: 1628371943}
   cookieText: {fileID: 410359884}
   cpsText: {fileID: 1532671800}
   cpcText: {fileID: 425886885}
@@ -3723,7 +3721,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faff1796fd3f624cad1851bc617e49c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeManager: {fileID: 523995620}
   buttonPrefab: {fileID: 84819533761852533, guid: 2910a333d01c57543ac28cd9b6e79177, type: 3}
   buttonParent: {fileID: 1544399594}
 --- !u!1 &1950626488
@@ -3737,7 +3734,7 @@ GameObject:
   - component: {fileID: 1950626489}
   - component: {fileID: 1950626490}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -56,13 +56,17 @@ public class GameManager : MonoBehaviour
         enemyManager = enemyManagerX;
         dataManager = dataManagerX;
 
+        // CookieManager初期化
         cookieManager.Init();
 
+        // UpgaradeManager初期化
         upgradeManager.Init();
 
-        upgradeUIManager.RessetButtons();
+        // UpgradeManager初期化
+        upgradeUIManager.Init();
 
-        enemyManager.waveCount = 1;
+        // EnemyManager初期化
+        enemyManager.Init();
 
     }
 

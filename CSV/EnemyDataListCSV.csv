@@ -1,0 +1,5 @@
+﻿enemyName,maxHP,rewardCookies,enemyPrefab,prefabAddress
+Capsule,10,1,Enemy/Capsule,Enemy/Capsule
+Cube,20,2,Enemy/Cube,Enemy/Cube
+Cylinder,30,3,Enemy/Cylinder,Enemy/Cylinder
+Sphere,40,4,Enemy/Sphere,Enemy/Sphere
