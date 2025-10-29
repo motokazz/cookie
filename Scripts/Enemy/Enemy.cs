@@ -3,6 +3,9 @@ using TMPro;
 /// <summary>
 /// エネミーのベースデータ
 /// </summary>
+/// 
+
+
 public class Enemy : MonoBehaviour
 {
     public EnemyData data;

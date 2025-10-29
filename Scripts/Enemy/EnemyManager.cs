@@ -8,7 +8,6 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]　public EnemyDataList enemyDataList;
 
     [Header("スポーン座標")]
-    [SerializeField] Transform spawnPoint;
     [SerializeField] GameObject spawnVolume;
 
     [Header("エネミーデータが無かった時使うプレファブ")]
@@ -18,18 +17,18 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] float spawnInterval=1.0f;
 
 
-    //
+    // 
     [NonSerialized] public Enemy currentEnemy;
-    [NonSerialized] public int waveCount = 1;
-
-
     private GameObject currentEnemyObj;
+
+    private int waveCount = 1;
+
     private Coroutine coroutine;
 
 
     private void Awake()
     {
-        currentEnemy =gameObject.AddComponent<Enemy>();
+        //currentEnemy = new Enemy();
     }
 
 
@@ -40,33 +39,42 @@ public class EnemyManager : MonoBehaviour
     public void SpawnNextEnemy()
     {
 
-        if (enemyDataList == null || enemyDataList.enemyList.Length == 0)
+        if (enemyDataList == null || enemyDataList.enemyList.Count == 0)
         {
             Debug.LogWarning("EnemyDataList is empty!");
             return;
         }
 
         // 敵を順番にまたはランダムに選出
-        int index = (waveCount - 1) % enemyDataList.enemyList.Length;
-        index = 0;
-        EnemyData selected = enemyDataList.enemyList[index];
+        int index = (waveCount - 1) % enemyDataList.enemyList.Count;
+        EnemyData enemyData = enemyDataList.enemyList[index];
 
         // 敵プレファブ見つからなかったら予備プレファブ
-        GameObject prefab = selected.enemyPrefab != null ? selected.enemyPrefab : fallbackEnemyPrefab;
+        GameObject prefab = enemyData.enemyPrefab != null ? enemyData.enemyPrefab : fallbackEnemyPrefab;
 
-        // スポーン
-        Vector3 spawnPos = spawnPoint != null ? GetRandomPositionInSpawnVolume() : Vector3.zero;
-        currentEnemyObj = Instantiate(prefab, spawnPos , Quaternion.identity);
+        // モデルスポーン
+        Vector3 spawnPos = spawnVolume != null ? GetRandomPositionInSpawnVolume() : Vector3.zero;
+        //currentEnemyObj = Instantiate(prefab, spawnPos , Quaternion.identity);
+
+        //Addressable読み込み
+        AddressableSpawn addressableSpawn = new();
+        addressableSpawn.spawn(enemyData.prefabAddress);
+        currentEnemyObj = addressableSpawn.gameObject;
+        Debug.Log(currentEnemyObj.name);
+        currentEnemyObj.transform.position = spawnPos;
+        currentEnemyObj.transform.rotation = Quaternion.identity;
+
 
         // Enemyコンポーネント取得
         currentEnemy = currentEnemyObj.GetComponent<Enemy>();
+        currentEnemy.data = enemyData;
 
         //エネミーコンポーネントを初期化
-        Initialize(selected);
+        Initialize(currentEnemy);
 
     }
     
-    
+    //スポーン間隔
     IEnumerator WaitSpawnNext()
     {
         yield return new WaitForSeconds(spawnInterval);
@@ -106,10 +114,10 @@ public class EnemyManager : MonoBehaviour
         return rnd;
     }
     
-    // EnemyData初期化
-    void Initialize(EnemyData enemyData)
+    // Enemy初期化
+    void Initialize(Enemy enemy)
     {
-        currentEnemy.data = enemyData;
+        currentEnemy = enemy;
         currentEnemy.currentHP = currentEnemy.data.maxHP*waveCount;
 
         //UI
@@ -117,6 +125,14 @@ public class EnemyManager : MonoBehaviour
         if (currentEnemy.nameText != null) currentEnemy.nameText.text = currentEnemy.data.enemyName;
     }
 
+    public void Init()
+    {
+        waveCount = 1;
+        if (currentEnemy != null)
+        {
+            Destroy(currentEnemyObj);
+        }
+    }
 
     // ダメージ処理
     public void TakeDamage(int damage)

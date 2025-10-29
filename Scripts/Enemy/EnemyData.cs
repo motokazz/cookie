@@ -7,4 +7,5 @@ public class EnemyData
     public double maxHP = 100;
     public double rewardCookies = 0;
     public GameObject enemyPrefab;
+    public string prefabAddress = "";
 }

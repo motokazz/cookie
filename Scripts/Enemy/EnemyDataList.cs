@@ -1,9 +1,10 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
+
 [CreateAssetMenu(fileName = "NewEnemyDataList", menuName = "Game/Enemy Data List")]
+[System.Serializable]
 public class EnemyDataList : ScriptableObject
 {
-    public EnemyData[] enemyList;
+    public List<EnemyData> enemyList;
 }

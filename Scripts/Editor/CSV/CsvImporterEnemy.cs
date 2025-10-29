@@ -6,16 +6,16 @@ using UnityEditor;
 using System;
 using System.Numerics;
 
-public class CsvImporterNPC : EditorWindow
+public class CsvImporterEnemy : EditorWindow
 {
     TextAsset csvFile;
     
-    string path = "Assets/Cookie/ScriptableObjects/NPCDataList.asset";
+    string path = "Assets/Cookie/ScriptableObjects/EnemyDataList2.asset";
 
-    [MenuItem("MS_Tools/CSVImporterNPC")]
+    [MenuItem("MS_Tools/CSVImporterEnemy")]
     public static void ShowWindow()
     {
-        EditorWindow.GetWindow(typeof(CsvImporterNPC));
+        EditorWindow.GetWindow(typeof(CsvImporterEnemy));
     }
 
     void OnGUI()
@@ -30,6 +30,9 @@ public class CsvImporterNPC : EditorWindow
         }
     }
 
+    // ===========================================
+    // CSVデータをスクリプタブルオブジェクトに書き込み
+    // ===========================================
     void CsvDataToScritableObject()
     {
 
@@ -53,8 +56,8 @@ public class CsvImporterNPC : EditorWindow
         dataList.RemoveAt(0);
 
         // Parse
-        var data = new NPCDataList();
-        data.npcList = Parser(headers, dataList.ToArray());
+        var data = new EnemyDataList();
+        data.enemyList = Parser(headers, dataList.ToArray());
 
         // 書き込み
         Write(data);
@@ -79,10 +82,10 @@ public class CsvImporterNPC : EditorWindow
     //  パーサー
     // ===========================================
 
-    List<NPCData> Parser(string[] headerList, string[] dataList)
+    List<EnemyData> Parser(string[] headerList, string[] dataList)
     {
-
-        var dl = new List<NPCData>();
+        var dl = new List<EnemyData>();
+        var data = new EnemyData();
 
         foreach (string line in dataList)
         {
@@ -95,11 +98,12 @@ public class CsvImporterNPC : EditorWindow
             }
 
             //
-            var data = new NPCData();
+            data = new();
 
             for (int i = 0; i < each.Length; i++) {
                 
                 string temp = each[i].Replace("\r\n","").Replace("\r","").Replace("\n","");
+
                 
                 // タイプ別パーサー
                 Type typ = data.GetType().GetField(headerList[i]).FieldType;
@@ -139,10 +143,14 @@ public class CsvImporterNPC : EditorWindow
         return dl;
     }
 
+
+
+
+
     // ===========================================
     // スクリプタブルオブジェクト書き込み
     // ===========================================
-    void Write(NPCDataList data )
+    void Write (EnemyDataList data )
     {
         // インスタンス化したものをアセットとして保存
         var asset =AssetDatabase.LoadAssetAtPath(path, data.GetType());
@@ -159,5 +167,16 @@ public class CsvImporterNPC : EditorWindow
         }
         AssetDatabase.Refresh();
         Debug.Log(" データの作成が完了しました。");
-    } 
+    }
+
+    List<T> Parsers<T>(string[] headerList, string[] dataList)
+    where T : new()
+    {
+        var list = new List<T>();
+
+        // ここで headerList と dataList を使って T 型を生成するなど
+        // 例: データ1行ごとに T のプロパティを設定する処理を入れられる
+
+        return list;
+    }
 }
