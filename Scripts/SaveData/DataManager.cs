@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    [HideInInspector] public SaveData data;     // json変換するデータのクラス
+    //[HideInInspector] public SaveData data;     // json変換するデータのクラス
 
     [SerializeField] string dirPath = "/";
     [SerializeField] string fileName = "Data.json";              // jsonファイル名
@@ -43,7 +43,10 @@ public class DataManager : MonoBehaviour
 
         //CookieManager
         json += ToJsonArray(GameManager.Instance.cookieManager);
-        
+
+        // EnemyManager
+        json += ToJsonArray(GameManager.Instance.enemyManager);
+
         //EnemyDataList
         json += ToJsonArray(GameManager.Instance.enemyManager.enemyDataList);
         
@@ -81,6 +84,12 @@ public class DataManager : MonoBehaviour
 
             switch (Type.GetType(splitted[0]).Name)
             {
+                case "EnemyManager":
+                    EnemyManager enemyManager = Instantiate(GameManager.Instance.enemyManager);
+                    JsonUtility.FromJsonOverwrite(splitted[1], enemyManager);
+                    GameManager.Instance.enemyManager.waveCount = enemyManager.waveCount;
+                    break;
+
                 case "EnemyDataList":
                     EnemyDataList enemyDataList = Instantiate(GameManager.Instance.enemyManager.enemyDataList);
                     JsonUtility.FromJsonOverwrite(splitted[1], enemyDataList);

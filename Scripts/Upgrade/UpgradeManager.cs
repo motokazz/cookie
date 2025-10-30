@@ -12,8 +12,6 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] float upgradeCostRatio = 1.15f;
     [SerializeField] float cpsIncreaseRatio = 1.15f;
 
-    AddressableSpawn addressableSpawn = new ();
-
     void Awake()
     {
         Init();
@@ -41,7 +39,7 @@ public class UpgradeManager : MonoBehaviour
     // アップグレード購入
     // ===========================================
 
-    public void TryBuyUpgrade(int index)
+    public async void TryBuyUpgrade(int index)
     {
         var cookieManager = GameManager.Instance.cookieManager;
         var upgrade = GameManager.Instance.upgradeManager.upgradeDataList.upgrades[index];
@@ -61,7 +59,11 @@ public class UpgradeManager : MonoBehaviour
 
             //NPC作成
             string key = upgradeDataList.upgrades[index].prefab;
-            addressableSpawn.SpawnAsync(key);
+            var prefab = await AddressableSpawn.SpawnAsync(key);
+            // モデルスポーン
+            //GameObject gameObject = prefab.gameObject;
+            //Instantiate(prefab.gameObject);
+
         }
     }
 

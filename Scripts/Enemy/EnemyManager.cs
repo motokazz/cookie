@@ -21,7 +21,7 @@ public class EnemyManager : MonoBehaviour
     [NonSerialized] public Enemy currentEnemy;
     private GameObject currentEnemyObj;
 
-    private int waveCount = 1;
+    public int waveCount = 1;
 
     private Coroutine coroutine;
 
@@ -36,7 +36,7 @@ public class EnemyManager : MonoBehaviour
     // スポーン処理
     // ===========================================
 
-    public void SpawnNextEnemy()
+    public async void SpawnNextEnemy()
     {
 
         if (enemyDataList == null || enemyDataList.enemyList.Count == 0)
@@ -52,18 +52,13 @@ public class EnemyManager : MonoBehaviour
         // 敵プレファブ見つからなかったら予備プレファブ
         GameObject prefab = enemyData.enemyPrefab != null ? enemyData.enemyPrefab : fallbackEnemyPrefab;
 
-        // モデルスポーン
-        Vector3 spawnPos = spawnVolume != null ? GetRandomPositionInSpawnVolume() : Vector3.zero;
-        //currentEnemyObj = Instantiate(prefab, spawnPos , Quaternion.identity);
 
         //Addressable読み込み
-        AddressableSpawn addressableSpawn = new();
-        addressableSpawn.spawn(enemyData.prefabAddress);
-        currentEnemyObj = addressableSpawn.gameObject;
-        Debug.Log(currentEnemyObj.name);
-        currentEnemyObj.transform.position = spawnPos;
-        currentEnemyObj.transform.rotation = Quaternion.identity;
 
+        // モデルスポーン
+        Vector3 spawnPos = spawnVolume != null ? GetRandomPositionInSpawnVolume() : Vector3.zero;
+        var prefabs = await AddressableSpawn.SpawnAsync(enemyData.prefabAddress);
+        currentEnemyObj = prefabs;
 
         // Enemyコンポーネント取得
         currentEnemy = currentEnemyObj.GetComponent<Enemy>();
@@ -73,7 +68,7 @@ public class EnemyManager : MonoBehaviour
         Initialize(currentEnemy);
 
     }
-    
+
     //スポーン間隔
     IEnumerator WaitSpawnNext()
     {

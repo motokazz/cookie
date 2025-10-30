@@ -73,4 +73,11 @@ public class NPCAI : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Enemy")
+        {
+            target = other.transform;
+        }
+    }
 }

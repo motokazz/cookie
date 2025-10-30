@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4038252905804250112}
   - component: {fileID: -6087494365513265931}
-  - component: {fileID: -8331079367932779490}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Enemy
@@ -51,32 +50,10 @@ MonoBehaviour:
     maxHP: 0
     rewardCookies: 0
     enemyPrefab: {fileID: 0}
+    prefabAddress: 
   currentHP: 100
   hpText: {fileID: 2959538425541611208}
   nameText: {fileID: 7475406850362295376}
---- !u!136 &-8331079367932779490
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1368272893154843835}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2429104278686178610
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,6 +513,7 @@ MonoBehaviour:
     maxHP: 0
     rewardCookies: 0
     enemyPrefab: {fileID: 0}
+    prefabAddress: 
   currentHP: 100
   hpText: {fileID: 2959538425541611208}
   nameText: {fileID: 7475406850362295376}
