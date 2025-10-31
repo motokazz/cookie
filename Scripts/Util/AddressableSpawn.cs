@@ -2,6 +2,7 @@
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
+
 // ===========================================
 // Addressableに登録されているGameObjectをSpawnする
 // コンポーネント化したくないのでMonoBehavior継承しないようにしてる
@@ -17,8 +18,8 @@ public static class AddressableSpawn
     {
         key = key.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");//改行削除
 
-        // 非同期で生成
-        var handle = Addressables.InstantiateAsync(key, parent);
+    // 非同期で生成
+    var handle = Addressables.InstantiateAsync(key, parent);
         var instance = await handle.Task;
 
         if (instance == null)

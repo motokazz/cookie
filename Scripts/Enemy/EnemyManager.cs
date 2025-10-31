@@ -2,10 +2,19 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// エネミーマネージャー
+/// </summary>
+/// 
+
 public class EnemyManager : MonoBehaviour
 {
+    // NonSerializedPublic
+    [NonSerialized] public int waveCount = 1;
+    [NonSerialized] public Enemy currentEnemy;
 
-    [SerializeField]　public EnemyDataList enemyDataList;
+    // Serialize
+    [SerializeField] EnemyDataList enemyDataList;
 
     [Header("スポーン座標")]
     [SerializeField] GameObject spawnVolume;
@@ -16,21 +25,9 @@ public class EnemyManager : MonoBehaviour
     [Header("次のエネミーが出てくるまでのインターバル")]
     [SerializeField] float spawnInterval=1.0f;
 
-
-    // 
-    [NonSerialized] public Enemy currentEnemy;
+    // Private
     private GameObject currentEnemyObj;
-
-    public int waveCount = 1;
-
     private Coroutine coroutine;
-
-
-    private void Awake()
-    {
-        //currentEnemy = new Enemy();
-    }
-
 
     // ===========================================
     // スポーン処理
@@ -49,16 +46,23 @@ public class EnemyManager : MonoBehaviour
         int index = (waveCount - 1) % enemyDataList.enemyList.Count;
         EnemyData enemyData = enemyDataList.enemyList[index];
 
-        // 敵プレファブ見つからなかったら予備プレファブ
-        GameObject prefab = enemyData.enemyPrefab != null ? enemyData.enemyPrefab : fallbackEnemyPrefab;
-
-
-        //Addressable読み込み
+        // ===========================================
+        // Addressable読み込み
+        // ===========================================
 
         // モデルスポーン
         Vector3 spawnPos = spawnVolume != null ? GetRandomPositionInSpawnVolume() : Vector3.zero;
         var prefabs = await AddressableSpawn.SpawnAsync(enemyData.prefabAddress);
-        currentEnemyObj = prefabs;
+
+        // 敵プレファブ見つからなかったら予備プレファブ
+        if (prefabs != null)
+        {
+            currentEnemyObj = prefabs;
+        }
+        else
+        {
+            currentEnemyObj = GameObject.Instantiate(fallbackEnemyPrefab);
+        }
 
         // Enemyコンポーネント取得
         currentEnemy = currentEnemyObj.GetComponent<Enemy>();
@@ -67,6 +71,15 @@ public class EnemyManager : MonoBehaviour
         //エネミーコンポーネントを初期化
         Initialize(currentEnemy);
 
+    }
+
+    public void SpawnProcess()
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(WaitSpawnNext());
     }
 
     //スポーン間隔
@@ -156,13 +169,9 @@ public class EnemyManager : MonoBehaviour
         Destroy(currentEnemyObj);
 
         waveCount++;
-        
+
         //Spawn
-        if (coroutine != null)
-        {
-            StopCoroutine(coroutine);
-        }
-        coroutine = StartCoroutine(WaitSpawnNext());
+        SpawnProcess();
         
     }
 }

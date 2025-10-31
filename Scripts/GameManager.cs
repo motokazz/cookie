@@ -39,15 +39,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         dataManager.Init();
-        enemyManager.SpawnNextEnemy();
+        enemyManager.SpawnProcess();
     }
 
-    // ゲーム終了時に保存
-    void OnDestroy()
-    {
-        dataManager.Save();
-    }
-
+    // ===========================================
+    // 初期化
+    // ===========================================
     public void Init()
     {
         cookieManager = cookieManagerX;
@@ -70,6 +67,23 @@ public class GameManager : MonoBehaviour
 
     }
 
+    // ===========================================
+    // リセット
+    // ===========================================
+    public void Reset()
+    {
+        Init();
+        enemyManager.SpawnProcess();
+    }
+
+    // ===========================================
+    // ゲーム終了時に保存
+    // ===========================================
+    void OnDestroy()
+    {
+        dataManager.Save();
+    }
+
 
 
 
@@ -77,6 +91,6 @@ public class GameManager : MonoBehaviour
     public void Checker()
     {
         Debug.Log(enemyManager.currentEnemy);
-        enemyManager.SpawnNextEnemy();
+        enemyManager.SpawnProcess();
     }
 }

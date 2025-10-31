@@ -1085,7 +1085,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 834141691}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: Init
+        m_MethodName: Reset
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3094,8 +3094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0e1a2a34124b146bba47e66d88cb17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookieManager: {fileID: 1628371943}
-  enemyManager: {fileID: 1508897361}
   clickButton: {fileID: 973206962}
 --- !u!1 &1532671797
 GameObject:
@@ -3643,6 +3641,7 @@ MonoBehaviour:
   cookieText: {fileID: 410359884}
   cpsText: {fileID: 1532671800}
   cpcText: {fileID: 425886885}
+  waveText: {fileID: 0}
 --- !u!114 &1628371946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3655,7 +3654,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2cf759caa00f940ae3a8d424412b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookieManager: {fileID: 1628371943}
   clickButton: {fileID: 973206962}
 --- !u!1 &1790612844
 GameObject:
@@ -3701,13 +3699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e6523ccc35b27540b71464f4f665fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    cookies: 0
-    cookiesPerSecond: 0
-    cookiesPerClick: 1
-    upgradeLevels: 
-    waveCount: 0
-    enemyCurrentHP: 0
   dirPath: /
   fileName: Data.json
 --- !u!1 &1933925068

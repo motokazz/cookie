@@ -1,12 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// クッキーマネージャー
+/// </summary>
 public class CookieManager : MonoBehaviour
 {
+    // 現在のクッキー数
     public double cookies = 0;
+    // 秒当たりクッキー生産量
     public float cookiesPerSecond = 0f;
+    // クリック当たりクッキー生産量
     public float cookiesPerClick = 1f;
 
+    // Private
     private float cookieBuffer = 0f;//CPS更新用
 
 
