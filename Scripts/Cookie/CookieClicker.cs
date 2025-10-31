@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class CookieClicker : MonoBehaviour
 {
-    public CookieManager cookieManager;
     [SerializeField] Button clickButton;
 
     private void Start()
@@ -14,6 +13,6 @@ public class CookieClicker : MonoBehaviour
 
     public void OnClickCookie()
     {
-        cookieManager.cookies++;
+        GameManager.Instance.cookieManager.cookies++;
     }
 }

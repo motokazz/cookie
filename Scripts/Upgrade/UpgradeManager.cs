@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-
+/// <summary>
+/// アップグレードマネージャー
+/// </summary>
 public class UpgradeManager : MonoBehaviour
 {
     [SerializeField] UpgradeDataList upgradeDataList_org;//元のUpgradeDataList

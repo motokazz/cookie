@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using TMPro;
+
 /// <summary>
-/// エネミーのベースデータ
+/// エネミーの表示データ
 /// </summary>
 /// 
-
 
 public class Enemy : MonoBehaviour
 {

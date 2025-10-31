@@ -48,7 +48,7 @@ public class DataManager : MonoBehaviour
         json += ToJsonArray(GameManager.Instance.enemyManager);
 
         //EnemyDataList
-        json += ToJsonArray(GameManager.Instance.enemyManager.enemyDataList);
+        //json += ToJsonArray(GameManager.Instance.enemyManager.enemyDataList);
         
         //UpgradeDataList
         json += ToJsonArray(GameManager.Instance.upgradeManager.upgradeDataList);
@@ -91,9 +91,9 @@ public class DataManager : MonoBehaviour
                     break;
 
                 case "EnemyDataList":
-                    EnemyDataList enemyDataList = Instantiate(GameManager.Instance.enemyManager.enemyDataList);
-                    JsonUtility.FromJsonOverwrite(splitted[1], enemyDataList);
-                    GameManager.Instance.enemyManager.enemyDataList = enemyDataList;
+                    //EnemyDataList enemyDataList = Instantiate(GameManager.Instance.enemyManager.enemyDataList);
+                    //JsonUtility.FromJsonOverwrite(splitted[1], enemyDataList);
+                    //GameManager.Instance.enemyManager.enemyDataList = enemyDataList;
                     break;
 
                 case "UpgradeDataList":

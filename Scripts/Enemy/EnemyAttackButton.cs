@@ -1,14 +1,25 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ã‚¨ãƒãƒŸãƒ¼æ”»æ’ƒãƒœã‚¿ãƒ³
+/// </summary>
+/// 
 
 public class EnemyAttackButton : MonoBehaviour
 {
 
-    public CookieManager cookieManager;
-    public EnemyManager enemyManager; // © ’Ç‰ÁI
     [SerializeField] Button clickButton;
 
+    // Private
+    CookieManager cookieManager;
+    EnemyManager enemyManager;
+
+    private void Awake()
+    {
+        cookieManager = GameManager.Instance.cookieManager;
+        enemyManager = GameManager.Instance.enemyManager;
+    }
 
     private void Start()
     {
@@ -17,10 +28,10 @@ public class EnemyAttackButton : MonoBehaviour
 
     public void OnClickCookie()
     {
-        // ƒNƒŠƒbƒN‚Æ“¯‚ÉUŒ‚ˆ—
+        // ã‚¯ãƒªãƒƒã‚¯ã¨åŒæ™‚ã«æ”»æ’ƒå‡¦ç†
         if (enemyManager != null && enemyManager.currentEnemy != null)
         {
-            enemyManager.TakeDamage(Mathf.FloorToInt(cookieManager.cookiesPerClick)); // ‚±‚±‚ÅUŒ‚
+            enemyManager.TakeDamage(Mathf.FloorToInt(cookieManager.cookiesPerClick)); // ã“ã“ã§æ”»æ’ƒ
         }
     }
 }
