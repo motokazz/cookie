@@ -1,4 +1,8 @@
 ﻿using UnityEngine;
+
+/// <summary>
+/// オブジェクトプールしたいオブジェクトにくっつけて使う
+/// </summary>
 public class PooledObject : MonoBehaviour
 {
     private ObjectPool pool;

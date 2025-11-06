@@ -36,10 +36,16 @@ public class GameManager : MonoBehaviour
         Init();
     }
 
-    private void Start()
+    private async void Start()
     {
         dataManager.Init();
-        enemyManager.SpawnProcess();
+
+        //upgradeManager.Init();
+
+        dataManager.Load();
+
+        upgradeManager.SpawnNPCs();
+        await enemyManager.SpawnProcess();
     }
 
     // ===========================================
@@ -70,10 +76,25 @@ public class GameManager : MonoBehaviour
     // ===========================================
     // リセット
     // ===========================================
-    public void Reset()
+    public async void Reset()
     {
-        Init();
-        enemyManager.SpawnProcess();
+        // UpgaradeManager初期化
+        upgradeManager.Reset();
+        upgradeManager.Init();
+        upgradeManager.SpawnNPCs();
+
+        // CookieManager初期化
+        cookieManager.Init();
+
+        // UpgradeManager初期化
+        upgradeUIManager.Init();
+
+        // EnemyManager初期化
+        enemyManager.Init();
+        await enemyManager.SpawnProcess();
+
+        dataManager.Init();
+        dataManager.Save();
     }
 
     // ===========================================
@@ -88,9 +109,9 @@ public class GameManager : MonoBehaviour
 
 
 
-    public void Checker()
+    public async void Checker()
     {
         Debug.Log(enemyManager.currentEnemy);
-        enemyManager.SpawnProcess();
+        await enemyManager.SpawnProcess();
     }
 }

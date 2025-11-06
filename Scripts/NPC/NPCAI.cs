@@ -8,7 +8,7 @@ public class NPCAI : MonoBehaviour
     [SerializeField] Transform target; // 追跡するターゲット（プレイヤーなど）
     [SerializeField] float attackRange = 2f; // 攻撃できる距離
     [SerializeField] float attackInterval = 2f; // 攻撃の間隔
-    [SerializeField] float attackMultiply = 100f;
+    [SerializeField] float attackPower = 0.1f;
 
     // 非公開変数
     float attackBuffer = 0f;
@@ -25,11 +25,12 @@ public class NPCAI : MonoBehaviour
     void Update()
     {
         // currentEnemyいたらターゲット設定
+        /*
         if(GameManager.Instance.enemyManager.currentEnemy != null)
         {
             target = GameManager.Instance.enemyManager.currentEnemy.transform;
         }
-
+        */
         // ターゲットが設定されていなければ何もしない
         if (target == null)
         {
@@ -64,7 +65,8 @@ public class NPCAI : MonoBehaviour
     void Attack()
     {
         animator.SetTrigger("Attack");
-        attackBuffer += GameManager.Instance.cookieManager.cookiesPerSecond * Time.deltaTime * attackMultiply;
+        attackBuffer += GameManager.Instance.cookieManager.cookiesPerSecond * attackPower;
+
         if (attackBuffer >= 1f)
         {
             int add = Mathf.FloorToInt(attackBuffer);

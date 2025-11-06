@@ -10,26 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f49e83bf526a9d4b862eefeb3198567, type: 3}
-  m_Name: EnemyDataList
-  m_EditorClassIdentifier: 
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDataList
   enemyList:
-  - enemyName: capsule
+  - enemyName: Capsule
     maxHP: 10
-    rewardCookies: 0
-    enemyPrefab: {fileID: 1368272893154843835, guid: 852095efb42a7e8479347bc32504dcbf, type: 3}
+    rewardCookies: 1
     prefabAddress: Enemy/Capsule
-  - enemyName: cube
-    maxHP: 10
-    rewardCookies: 0
-    enemyPrefab: {fileID: 1368272893154843835, guid: aa99c358ab634ee468ad98c14829a408, type: 3}
+  - enemyName: Cube
+    maxHP: 20
+    rewardCookies: 2
     prefabAddress: Enemy/Cube
-  - enemyName: cylinder
-    maxHP: 10
-    rewardCookies: 0
-    enemyPrefab: {fileID: 1368272893154843835, guid: 26c08d4398b12ad40985b558162b3cea, type: 3}
+  - enemyName: Cylinder
+    maxHP: 30
+    rewardCookies: 3
     prefabAddress: Enemy/Cylinder
-  - enemyName: sphere
-    maxHP: 10
-    rewardCookies: 0
-    enemyPrefab: {fileID: 1368272893154843835, guid: 09871473b04196a4fa911a5542e46b26, type: 3}
+  - enemyName: Sphere
+    maxHP: 40
+    rewardCookies: 4
     prefabAddress: Enemy/Sphere

@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Numerics;
-
+/// <summary>
+/// CSVからスクリプタブルオブジェクト作成
+/// </summary>
 public class CsvImporterEnemy : EditorWindow
 {
     TextAsset csvFile;
     
-    string path = "Assets/Cookie/ScriptableObjects/EnemyDataList2.asset";
+    string path = "Assets/Cookie/ScriptableObjects/EnemyDataList.asset";
 
     [MenuItem("MS_Tools/CSVImporterEnemy")]
     public static void ShowWindow()
@@ -85,7 +87,6 @@ public class CsvImporterEnemy : EditorWindow
     List<EnemyData> Parser(string[] headerList, string[] dataList)
     {
         var dl = new List<EnemyData>();
-        var data = new EnemyData();
 
         foreach (string line in dataList)
         {
@@ -98,7 +99,7 @@ public class CsvImporterEnemy : EditorWindow
             }
 
             //
-            data = new();
+            var data = new EnemyData();
 
             for (int i = 0; i < each.Length; i++) {
                 
@@ -106,6 +107,7 @@ public class CsvImporterEnemy : EditorWindow
 
                 
                 // タイプ別パーサー
+                if (data.GetType().GetField(headerList[i]) == null) { continue; }
                 Type typ = data.GetType().GetField(headerList[i]).FieldType;
 
                 if (typ == typeof(string))
@@ -167,16 +169,5 @@ public class CsvImporterEnemy : EditorWindow
         }
         AssetDatabase.Refresh();
         Debug.Log(" データの作成が完了しました。");
-    }
-
-    List<T> Parsers<T>(string[] headerList, string[] dataList)
-    where T : new()
-    {
-        var list = new List<T>();
-
-        // ここで headerList と dataList を使って T 型を生成するなど
-        // 例: データ1行ごとに T のプロパティを設定する処理を入れられる
-
-        return list;
     }
 }

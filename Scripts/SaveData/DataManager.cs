@@ -2,10 +2,11 @@
 using System.IO;
 using UnityEngine;
 
-
+/// <summary>
+/// セーブデータ書き込み・読み込み
+/// </summary>
 public class DataManager : MonoBehaviour
 {
-    //[HideInInspector] public SaveData data;     // json変換するデータのクラス
 
     [SerializeField] string dirPath = "/";
     [SerializeField] string fileName = "Data.json";              // jsonファイル名
@@ -26,9 +27,6 @@ public class DataManager : MonoBehaviour
             Save();
         }
 
-        // ファイルを読み込んでdataに格納
-        Load(filepath);
-
     }
 
 
@@ -47,9 +45,6 @@ public class DataManager : MonoBehaviour
         // EnemyManager
         json += ToJsonArray(GameManager.Instance.enemyManager);
 
-        //EnemyDataList
-        //json += ToJsonArray(GameManager.Instance.enemyManager.enemyDataList);
-        
         //UpgradeDataList
         json += ToJsonArray(GameManager.Instance.upgradeManager.upgradeDataList);
 
@@ -58,6 +53,7 @@ public class DataManager : MonoBehaviour
         wr.Close();
 
     }
+
 
     string ToJsonArray<T>( T data)
     {
@@ -71,9 +67,9 @@ public class DataManager : MonoBehaviour
     }
 
 
-    void Load(string path)
+    public void Load()
     {
-        StreamReader rd = new StreamReader(path);
+        StreamReader rd = new StreamReader(filepath);
         while (!rd.EndOfStream)
         {
             string temp = rd.ReadLine();
@@ -88,12 +84,6 @@ public class DataManager : MonoBehaviour
                     EnemyManager enemyManager = Instantiate(GameManager.Instance.enemyManager);
                     JsonUtility.FromJsonOverwrite(splitted[1], enemyManager);
                     GameManager.Instance.enemyManager.waveCount = enemyManager.waveCount;
-                    break;
-
-                case "EnemyDataList":
-                    //EnemyDataList enemyDataList = Instantiate(GameManager.Instance.enemyManager.enemyDataList);
-                    //JsonUtility.FromJsonOverwrite(splitted[1], enemyDataList);
-                    //GameManager.Instance.enemyManager.enemyDataList = enemyDataList;
                     break;
 
                 case "UpgradeDataList":
