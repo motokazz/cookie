@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         Init();
     }
 
-    private async void Start()
+    private void Start()
     {
         dataManager.Init();
 
@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
         dataManager.Load();
 
         upgradeManager.SpawnNPCs();
-        await enemyManager.SpawnProcess();
     }
 
     // ===========================================
@@ -76,7 +75,7 @@ public class GameManager : MonoBehaviour
     // ===========================================
     // リセット
     // ===========================================
-    public async void Reset()
+    public void Reset()
     {
         // UpgaradeManager初期化
         upgradeManager.Reset();
@@ -91,7 +90,6 @@ public class GameManager : MonoBehaviour
 
         // EnemyManager初期化
         enemyManager.Init();
-        await enemyManager.SpawnProcess();
 
         dataManager.Init();
         dataManager.Save();
@@ -105,13 +103,9 @@ public class GameManager : MonoBehaviour
         dataManager.Save();
     }
 
-
-
-
-
-    public async void Checker()
+    public void Checker()
     {
         Debug.Log(enemyManager.currentEnemy);
-        await enemyManager.SpawnProcess();
+        enemyManager.SpawnProcess();
     }
 }

@@ -2560,75 +2560,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206221021}
   m_CullTransparentMesh: 1
---- !u!1001 &1225678141
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.48
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
-      propertyPath: m_Name
-      value: kaiju+creature+3d+model
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 408ab92cba7d75b43bb4971cfecdcce0, type: 3}
 --- !u!1 &1234608075
 GameObject:
   m_ObjectHideFlags: 0
@@ -3444,6 +3375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveCount: 1
   currentEnemy: {fileID: 0}
+  currentEnemyCount: 0
   enemyDataList: {fileID: 11400000, guid: 1bbb51f14ef4f3e45b241739651ecc8a, type: 2}
   spawnVolume: {fileID: 1370033000}
   spawnInterval: 1
@@ -4723,5 +4655,4 @@ SceneRoots:
   - {fileID: 1234608077}
   - {fileID: 1911352910}
   - {fileID: 2076720188}
-  - {fileID: 1225678141}
   - {fileID: 1403362712}

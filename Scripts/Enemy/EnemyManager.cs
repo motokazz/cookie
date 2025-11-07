@@ -15,6 +15,7 @@ public class EnemyManager : MonoBehaviour
     // Public
     [HideInInspector] public int waveCount = 1;
     [HideInInspector] public Enemy currentEnemy;
+    [HideInInspector] public int currentEnemyCount = 0;
 
     // Serialize
     [SerializeField] EnemyDataList enemyDataList;
@@ -31,6 +32,7 @@ public class EnemyManager : MonoBehaviour
 
     // Private
     private GameObject currentEnemyObj;
+
     private Spawner spawner;
 
 
@@ -40,19 +42,6 @@ public class EnemyManager : MonoBehaviour
         {
             spawner = gameObject.AddComponent<Spawner>();
         }
-    }
-
-    // ===========================================
-    // Enemyの初期化 渡したエネミーデータで上書き
-    // ===========================================
-    void Initialize(Enemy enemy)
-    {
-        currentEnemy = enemy;
-        currentEnemy.currentHP = currentEnemy.data.maxHP * waveCount;
-
-        //UI
-        if (currentEnemy.hpText != null) currentEnemy.hpText.text = $"HP: {currentEnemy.currentHP}";
-        if (currentEnemy.nameText != null) currentEnemy.nameText.text = currentEnemy.data.enemyName;
     }
 
     // ===========================================
@@ -68,6 +57,13 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public async void Update()
+    {
+        if (currentEnemyCount <= 0) {
+            currentEnemyCount++;
+            await SpawnProcess();
+        }
+    }
 
     // ===========================================
     // スポーン処理
@@ -86,112 +82,46 @@ public class EnemyManager : MonoBehaviour
         int index = (waveCount - 1) % enemyDataList.enemyList.Count;
         EnemyData enemyData = enemyDataList.enemyList[index];
 
-
         // モデルスポーン
-        
         await spawner.Spawn(enemyData.prefabAddress, spawnVolume);
         currentEnemyObj = spawner.prefabs;
 
         // Enemyコンポーネント取得
         currentEnemy = currentEnemyObj.GetComponent<Enemy>();
-
         currentEnemy.data = enemyData;
 
         //エネミーコンポーネントを初期化
         currentEnemy.Initialize(waveCount);
+        
+        cts.Cancel();// SpawnProcessキャンセル
 
-        //逃走用タスク
-        //await RunProcess();
+        await currentEnemy.RunProcess(runInterval);
     }
 
     // ===========================================
     // スポーン間隔調整
     // ===========================================
-    CancellationTokenSource cts = new CancellationTokenSource();
+    CancellationTokenSource cts;
     public async UniTask SpawnProcess()
     {
-        
-        CancellationToken token = cts.Token;
+        cts = new CancellationTokenSource();
 
         if (currentEnemyObj == null)
         {
-            await ShowWaitTime(spawnInterval);
+            await ShowWaitTime(spawnInterval,cts.Token);
             await SpawnNextEnemy();
         }
-        if(currentEnemyObj != null)
-        {
-            await RunProcess(token);
-        }
-        else
-        {
-            cts.Cancel();
-        }
 
     }
 
-    async UniTask RunProcess(CancellationToken token)
-    {
-        if (currentEnemyObj != null)
-        {
-            await ShowWaitTime(runInterval);
-            await Run();
-        }
-    }
-
-    private async UniTask ShowWaitTime(float seconds)
+    private async UniTask ShowWaitTime(float seconds,CancellationToken token)
     {
         float remaining = seconds;
         while (remaining > 0f)
         {
             timeLimit=remaining;
-            await UniTask.Yield(); // 次のフレームまで待つ
+            await UniTask.Yield(token); // 次のフレームまで待つ
             remaining -= Time.deltaTime;
         }
-    }
-
-
-
-    // ===========================================
-    // エネミー挙動
-    // ===========================================
-    // ダメージ処理
-    public async UniTask TakeDamage(int damage)
-    {
-        if (currentEnemyObj != null)
-        {
-            currentEnemy.currentHP -= damage;
-            if (currentEnemy.currentHP > 0)
-            {
-                if (currentEnemy.hpText != null) currentEnemy.hpText.text = $"HP: {currentEnemy.currentHP}";
-            }
-            else
-            {
-                await Die();
-            }
-        }
-    }
-
-    // 逃走
-    async UniTask Run()
-    {
-        Destroy(currentEnemyObj);
-        cts.Cancel();
-        await SpawnProcess();
-    }
-
-    // 死亡
-    async UniTask Die()
-    {
-        //勝利ボーナス
-        GameManager.Instance.cookieManager.cookies += currentEnemy.data.rewardCookies;
-        
-        Destroy(currentEnemyObj);
-
-        waveCount++;
-
-        //Spawn
-        cts.Cancel();
-        await SpawnProcess();
-        
     }
 }

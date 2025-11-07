@@ -31,7 +31,7 @@ public class EnemyAttackButton : MonoBehaviour
         // クリックと同時に攻撃処理
         if (enemyManager != null && enemyManager.currentEnemy != null)
         {
-            enemyManager.TakeDamage(Mathf.FloorToInt(cookieManager.cookiesPerClick)); // ここで攻撃
+            enemyManager.currentEnemy.TakeDamage(Mathf.FloorToInt(cookieManager.cookiesPerClick)); // ここで攻撃
         }
     }
 }

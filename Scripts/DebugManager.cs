@@ -13,7 +13,8 @@ public class DebugManager : MonoBehaviour
     void DebugMessages()
     {
         var gm = GameManager.Instance;
-        textMeshPro.text = gm.enemyManager.timeLimit.ToString();
+        textMeshPro.text = gm.enemyManager.timeLimit.ToString()+"\n";
+        textMeshPro.text += gm.enemyManager.currentEnemyCount.ToString()+"\n";
     }
 
 }

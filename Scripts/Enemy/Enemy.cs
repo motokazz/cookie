@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 /// <summary>
 /// エネミーの表示データ
@@ -14,6 +16,8 @@ public class Enemy : MonoBehaviour
     public TMP_Text hpText;
     public TMP_Text nameText;
 
+    public float timeLimit;
+
     private void Awake()
     {
         // Enemyコンポーネント取得
@@ -24,6 +28,7 @@ public class Enemy : MonoBehaviour
             currentEnemy = gameObject.AddComponent<Enemy>();
         }
 
+        //タグ設定
         if (gameObject.tag != "Enemy")
         {
             gameObject.tag = "Enemy";
@@ -44,4 +49,68 @@ public class Enemy : MonoBehaviour
     }
 
 
+    // ===========================================
+    // スポーン処理
+    // ===========================================
+
+    private CancellationTokenSource cts;
+    public async UniTask RunProcess(float runInterval)
+    {
+        cts = new CancellationTokenSource();
+        await ShowWaitTime(runInterval,cts.Token);
+        Run();
+    }
+
+    private async UniTask ShowWaitTime(float seconds,CancellationToken token)
+    {
+        float remaining = seconds;
+        while (remaining > 0f)
+        {
+            GameManager.Instance.enemyManager.timeLimit = remaining;
+            await UniTask.Yield(token); // 次のフレームまで待つ
+            remaining -= Time.deltaTime;
+        }
+    }
+
+    // ===========================================
+    // エネミー挙動
+    // ===========================================
+    // ダメージ処理
+    public void TakeDamage(int damage)
+    {
+        currentHP -= damage;
+        if (currentHP > 0)
+        {
+            if (hpText != null) hpText.text = $"HP: {currentHP}";
+        }
+        else
+        {
+            Die();
+        }
+    }
+
+    // 逃走
+    public void Run()
+    {
+        GameManager.Instance.enemyManager.currentEnemyCount --;
+
+        Destroy(gameObject);
+        Debug.Log("run");
+    }
+
+    // 死亡
+    public void Die()
+    {
+        cts.Cancel();
+        //勝利ボーナス
+        GameManager.Instance.cookieManager.cookies += data.rewardCookies;
+        GameManager.Instance.enemyManager.waveCount++;
+        GameManager.Instance.enemyManager.currentEnemyCount --;
+
+        //Spawn
+        
+        Destroy(gameObject);
+
+        Debug.Log("dead");
+    }
 }

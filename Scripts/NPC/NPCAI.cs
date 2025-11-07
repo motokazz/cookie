@@ -71,7 +71,12 @@ public class NPCAI : MonoBehaviour
         {
             int add = Mathf.FloorToInt(attackBuffer);
             attackBuffer -= add;
-            GameManager.Instance.enemyManager.TakeDamage(add); // ここで攻撃
+
+            var enemy = target.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(add);
+            }
         }
     }
 
