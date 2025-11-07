@@ -9,6 +9,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] UpgradeDataList upgradeDataList_org;//元のUpgradeDataList
     [HideInInspector] public UpgradeDataList upgradeDataList;//ゲーム中に使うUpgradeDataList
 
+    [SerializeField] Transform parent;
 
     [Header("アップグレードコスト倍率")]
     [SerializeField] float upgradeCostRatio = 1.15f;
@@ -16,7 +17,7 @@ public class UpgradeManager : MonoBehaviour
 
     void Awake()
     {
-        Init();
+        upgradeDataList = Instantiate(upgradeDataList_org);
     }
 
 
@@ -24,18 +25,43 @@ public class UpgradeManager : MonoBehaviour
     // UpgradeDataList初期化
     // ===========================================
 
-    public void Init()
+    public async void Init()
     {
-        
         upgradeDataList = Instantiate(upgradeDataList_org);
         for (int i = 0; i< upgradeDataList.upgrades.Count;i++)
         {
             var data = upgradeDataList.upgrades[i];
             upgradeDataList.upgrades[i].currentCost = CostCalc(data.baseCost, data.level);
             upgradeDataList.upgrades[i].cpsIncreaseTotal = CPSCalc(data.cpsIncrease,data.level);
+            if (data.level > 0)
+            {
+                var prefab = await AddressableSpawn.SpawnAsync(data.prefab);
+                prefab.transform.SetParent(parent);
+            }
         }
     }
 
+    public async void SpawnNPCs()
+    {
+        for (int i = 0; i < upgradeDataList.upgrades.Count; i++)
+        {
+            var data = upgradeDataList.upgrades[i];
+            if (data.level > 0)
+            {
+                var prefab = await AddressableSpawn.SpawnAsync(data.prefab);
+                prefab.transform.SetParent(parent);
+            }
+        }
+    }
+
+
+    public void Reset()
+    {
+        foreach (Transform tr in parent)
+        {
+            Destroy(tr.gameObject);
+        }
+    }
 
     // ===========================================
     // アップグレード購入
@@ -60,11 +86,13 @@ public class UpgradeManager : MonoBehaviour
             cookieManager.cookiesPerSecond += upgrade.cpsIncrease * cpsIncreaseRatio;
 
             //NPC作成
-            string key = upgradeDataList.upgrades[index].prefab;
-            var prefab = await AddressableSpawn.SpawnAsync(key);
-            // モデルスポーン
-            //GameObject gameObject = prefab.gameObject;
-            //Instantiate(prefab.gameObject);
+            if (upgrade.level < 2)
+            {
+                string key = upgrade.prefab;
+                var prefab = await AddressableSpawn.SpawnAsync(key);
+                prefab.transform.SetParent(parent);
+            }
+
 
         }
     }

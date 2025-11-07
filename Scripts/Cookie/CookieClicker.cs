@@ -1,6 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// クッキー増やすボタン用
+/// </summary>
 
 public class CookieClicker : MonoBehaviour
 {

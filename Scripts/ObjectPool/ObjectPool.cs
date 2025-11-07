@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// オブジェクトプール
+/// オブジェクト種類ごとに一つインスタンスして使う
+/// </summary>
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private uint initPoolSize;

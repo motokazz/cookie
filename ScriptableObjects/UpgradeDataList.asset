@@ -20,7 +20,7 @@ MonoBehaviour:
     cpsIncrease: 0.1
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Grandma
     description: Grandma
     baseCost: 25
@@ -28,7 +28,7 @@ MonoBehaviour:
     cpsIncrease: 0.25
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Farm
     description: Farm
     baseCost: 50
@@ -36,7 +36,7 @@ MonoBehaviour:
     cpsIncrease: 0.5
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Mine
     description: Mine
     baseCost: 75
@@ -44,7 +44,7 @@ MonoBehaviour:
     cpsIncrease: 0.75
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Factory
     description: Factory
     baseCost: 100
@@ -52,7 +52,7 @@ MonoBehaviour:
     cpsIncrease: 1
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Bank
     description: Bank
     baseCost: 250
@@ -60,7 +60,7 @@ MonoBehaviour:
     cpsIncrease: 2.5
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Temple
     description: Temple
     baseCost: 500
@@ -68,7 +68,7 @@ MonoBehaviour:
     cpsIncrease: 5
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: WizardTower
     description: WizardTower
     baseCost: 750
@@ -76,7 +76,7 @@ MonoBehaviour:
     cpsIncrease: 7.5
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Shipment
     description: Shipment
     baseCost: 1000
@@ -84,7 +84,7 @@ MonoBehaviour:
     cpsIncrease: 10
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: AlchemyLab
     description: AlchemyLab
     baseCost: 2500
@@ -92,7 +92,7 @@ MonoBehaviour:
     cpsIncrease: 25
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Portal
     description: Portal
     baseCost: 5000
@@ -100,7 +100,7 @@ MonoBehaviour:
     cpsIncrease: 50
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: TimeMachine
     description: TimeMachine
     baseCost: 7500
@@ -108,7 +108,7 @@ MonoBehaviour:
     cpsIncrease: 75
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: AntimatterCondenser
     description: AntimatterCondenser
     baseCost: 10000
@@ -116,7 +116,7 @@ MonoBehaviour:
     cpsIncrease: 100
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Prism
     description: Prism
     baseCost: 25000
@@ -124,7 +124,7 @@ MonoBehaviour:
     cpsIncrease: 250
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: ChanceMaker
     description: ChanceMaker
     baseCost: 50000
@@ -132,7 +132,7 @@ MonoBehaviour:
     cpsIncrease: 500
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: FractalEngine
     description: FractalEngine
     baseCost: 75000
@@ -140,7 +140,7 @@ MonoBehaviour:
     cpsIncrease: 750
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: JavascriptConsole
     description: JavascriptConsole
     baseCost: 100000
@@ -148,7 +148,7 @@ MonoBehaviour:
     cpsIncrease: 1000
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: Idleverse
     description: Idleverse
     baseCost: 250000
@@ -156,7 +156,7 @@ MonoBehaviour:
     cpsIncrease: 2500
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: ContexBaker
     description: ContexBaker
     baseCost: 500000
@@ -164,7 +164,7 @@ MonoBehaviour:
     cpsIncrease: 5000
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human
   - upgradeName: You
     description: You
     baseCost: 750000
@@ -172,4 +172,4 @@ MonoBehaviour:
     cpsIncrease: 7500
     cpsIncreaseTotal: 0
     level: 0
-    prefab: "NPC/human\r"
+    prefab: NPC/human

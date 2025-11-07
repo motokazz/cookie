@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// ゲーム情報表示
+/// クッキー情報表示
 /// </summary>
 /// 
 public class CookieInfo : MonoBehaviour
@@ -31,7 +31,7 @@ public class CookieInfo : MonoBehaviour
         ChangeText(cpcText, $"CPC : {gm.cookieManager.cookiesPerClick}");
 
         // 現在のWaveCount
-        ChangeText(waveText, $"CPC : {gm.enemyManager.waveCount}");
+        ChangeText(waveText, $"Wave : {gm.enemyManager.waveCount}");
 
     }
 

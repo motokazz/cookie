@@ -1,24 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 using System;
 using System.Numerics;
-
 /// <summary>
-/// 
+/// CSVからスクリプタブルオブジェクト作成
 /// </summary>
-public class CsvImporterNPC : EditorWindow
+public class CsvImporterUpgrade : EditorWindow
 {
     TextAsset csvFile;
-    
-    string path = "Assets/Cookie/ScriptableObjects/NPCDataList.asset";
+    ///
+    string path = "Assets/Cookie/ScriptableObjects/UpgradeDataList.asset";
 
-    [MenuItem("MS_Tools/CSVImporterNPC")]
+
+    [MenuItem("MS_Tools/CSVImporterUpgradeDataList")]
     public static void ShowWindow()
     {
-        EditorWindow.GetWindow(typeof(CsvImporterNPC));
+        EditorWindow.GetWindow(typeof(CsvImporterUpgrade));
     }
 
     void OnGUI()
@@ -32,6 +31,7 @@ public class CsvImporterNPC : EditorWindow
             CsvDataToScritableObject();
         }
     }
+
 
     void CsvDataToScritableObject()
     {
@@ -56,9 +56,8 @@ public class CsvImporterNPC : EditorWindow
         dataList.RemoveAt(0);
 
         // Parse
-        var data = new NPCDataList();
-        data.npcList = Parser(headers, dataList.ToArray());
-
+        var data = new UpgradeDataList();
+        data.upgrades = Parser(headers, dataList.ToArray());
         // 書き込み
         Write(data);
 
@@ -82,10 +81,10 @@ public class CsvImporterNPC : EditorWindow
     //  パーサー
     // ===========================================
 
-    List<NPCData> Parser(string[] headerList, string[] dataList)
+    List<UpgradeData> Parser(string[] headerList, string[] dataList)
     {
 
-        var dl = new List<NPCData>();
+        var dl = new List<UpgradeData>();
 
         foreach (string line in dataList)
         {
@@ -98,11 +97,12 @@ public class CsvImporterNPC : EditorWindow
             }
 
             //
-            var data = new NPCData();
+            var data = new UpgradeData();
 
-            for (int i = 0; i < each.Length; i++) {
-                
-                string temp = each[i].Replace("\r\n","").Replace("\r","").Replace("\n","");
+            for (int i = 0; i < each.Length; i++)
+            {
+
+                string temp = each[i].Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
 
                 // タイプ別パーサー
                 if (data.GetType().GetField(headerList[i]) == null) { continue; }
@@ -110,7 +110,7 @@ public class CsvImporterNPC : EditorWindow
 
                 if (typ == typeof(string))
                 {
-                    data.GetType().GetField(headerList[i]).SetValue(data , temp);
+                    data.GetType().GetField(headerList[i]).SetValue(data, temp);
                 }
                 if (typ == typeof(int))
                 {
@@ -136,7 +136,7 @@ public class CsvImporterNPC : EditorWindow
                 {
                     data.GetType().GetField(headerList[i]).SetValue(data, BigInteger.Parse(temp));
                 }
-                
+
             }
             dl.Add(data);
         }
@@ -146,10 +146,10 @@ public class CsvImporterNPC : EditorWindow
     // ===========================================
     // スクリプタブルオブジェクト書き込み
     // ===========================================
-    void Write(NPCDataList data )
+    void Write(UpgradeDataList data)
     {
         // インスタンス化したものをアセットとして保存
-        var asset =AssetDatabase.LoadAssetAtPath(path, data.GetType());
+        var asset = AssetDatabase.LoadAssetAtPath(path, data.GetType());
         if (asset == null)
         {
             // 指定のパスにファイルが存在しない場合は新規作成
@@ -163,5 +163,6 @@ public class CsvImporterNPC : EditorWindow
         }
         AssetDatabase.Refresh();
         Debug.Log(" データの作成が完了しました。");
-    } 
+    }
+
 }

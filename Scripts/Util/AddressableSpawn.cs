@@ -2,6 +2,9 @@
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using System.Linq;
+
 
 // ===========================================
 // Addressableに登録されているGameObjectをSpawnする
@@ -14,27 +17,39 @@ using System.Threading.Tasks;
 /// </summary>
 public static class AddressableSpawn
 {
+    // 存在確認
+    public static async UniTask<bool> Exists(string pathToAsset)
+    => (await Addressables.LoadResourceLocationsAsync(pathToAsset)).Any();
+
+    //Spawn
     public static async Task<GameObject> SpawnAsync(string key, Transform parent = null)
     {
         key = key.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");//改行削除
 
-    // 非同期で生成
-    var handle = Addressables.InstantiateAsync(key, parent);
-        var instance = await handle.Task;
+        // 存在確認
+        var exists = await Exists(key);
 
-        if (instance == null)
+        if (exists)
+        {
+            // 非同期で生成
+            var handle = Addressables.InstantiateAsync(key, parent);
+            var instance = await handle.Task;
+
+            // 自動解放用コンポーネントを追加
+            var autoReleaser = instance.AddComponent<AddressableAutoRelease>();
+            autoReleaser.SetHandle(handle);
+            return instance;
+        }
+        else
         {
             Debug.LogWarning($"Failed to instantiate Addressable: {key}");
             return null;
         }
-
-        // 自動解放用コンポーネントを追加
-        var autoReleaser = instance.AddComponent<AddressableAutoRelease>();
-        autoReleaser.SetHandle(handle);
-
-        return instance;
     }
 }
+
+
+
 
 /// <summary>
 /// このコンポーネントが付いている GameObject が Destroy された時に

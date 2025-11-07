@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+
 
 /// <summary>
 /// エネミーマネージャー
@@ -9,9 +12,10 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    // NonSerializedPublic
-    [NonSerialized] public int waveCount = 1;
-    [NonSerialized] public Enemy currentEnemy;
+    // Public
+    [HideInInspector] public int waveCount = 1;
+    [HideInInspector] public Enemy currentEnemy;
+    [HideInInspector] public int currentEnemyCount = 0;
 
     // Serialize
     [SerializeField] EnemyDataList enemyDataList;
@@ -19,119 +23,30 @@ public class EnemyManager : MonoBehaviour
     [Header("スポーン座標")]
     [SerializeField] GameObject spawnVolume;
 
-    [Header("エネミーデータが無かった時使うプレファブ")]
-    [SerializeField] GameObject fallbackEnemyPrefab;
-
     [Header("次のエネミーが出てくるまでのインターバル")]
     [SerializeField] float spawnInterval=1.0f;
 
+    [Header("エネミーが逃げるまでのインターバル")]
+    public float runInterval = 1.0f;
+    public float timeLimit;
+
     // Private
     private GameObject currentEnemyObj;
-    private Coroutine coroutine;
+
+    private Spawner spawner;
+
+
+    private void Awake()
+    {
+        if (GetComponent<Spawner>() == null)
+        {
+            spawner = gameObject.AddComponent<Spawner>();
+        }
+    }
 
     // ===========================================
-    // スポーン処理
+    // EnemyManagerの初期化
     // ===========================================
-
-    public async void SpawnNextEnemy()
-    {
-
-        if (enemyDataList == null || enemyDataList.enemyList.Count == 0)
-        {
-            Debug.LogWarning("EnemyDataList is empty!");
-            return;
-        }
-
-        // 敵を順番にまたはランダムに選出
-        int index = (waveCount - 1) % enemyDataList.enemyList.Count;
-        EnemyData enemyData = enemyDataList.enemyList[index];
-
-        // ===========================================
-        // Addressable読み込み
-        // ===========================================
-
-        // モデルスポーン
-        Vector3 spawnPos = spawnVolume != null ? GetRandomPositionInSpawnVolume() : Vector3.zero;
-        var prefabs = await AddressableSpawn.SpawnAsync(enemyData.prefabAddress);
-
-        // 敵プレファブ見つからなかったら予備プレファブ
-        if (prefabs != null)
-        {
-            currentEnemyObj = prefabs;
-        }
-        else
-        {
-            currentEnemyObj = GameObject.Instantiate(fallbackEnemyPrefab);
-        }
-
-        // Enemyコンポーネント取得
-        currentEnemy = currentEnemyObj.GetComponent<Enemy>();
-        currentEnemy.data = enemyData;
-
-        //エネミーコンポーネントを初期化
-        Initialize(currentEnemy);
-
-    }
-
-    public void SpawnProcess()
-    {
-        if (coroutine != null)
-        {
-            StopCoroutine(coroutine);
-        }
-        coroutine = StartCoroutine(WaitSpawnNext());
-    }
-
-    //スポーン間隔
-    IEnumerator WaitSpawnNext()
-    {
-        yield return new WaitForSeconds(spawnInterval);
-        SpawnNextEnemy();
-    }
-
-    // volume内の点をランダムに抽出
-    Vector3 GetRandomPositionInSpawnVolume()
-    {
-        Vector3 rnd = Vector3.zero;
-        if (spawnVolume != null)
-        {
-            var vol = spawnVolume.GetComponent<MeshFilter>();
-            if (vol != null)
-            {
-                var min = vol.mesh.bounds.min;
-                var max = vol.mesh.bounds.max;
-
-                min.x *= spawnVolume.transform.localScale.x;
-                min.y *= spawnVolume.transform.localScale.y;
-                min.z *= spawnVolume.transform.localScale.z;
-                max.x *= spawnVolume.transform.localScale.x;
-                max.y *= spawnVolume.transform.localScale.y;
-                max.z *= spawnVolume.transform.localScale.z;
-
-                rnd.x = UnityEngine.Random.Range(min.x, max.x);
-                rnd.y = UnityEngine.Random.Range(min.y, max.y);
-                rnd.z = UnityEngine.Random.Range(min.z, max.z);
-
-            }
-        }
-
-        rnd.x += spawnVolume.transform.position.x;
-        rnd.y += spawnVolume.transform.position.y;
-        rnd.z += spawnVolume.transform.position.z;
-
-        return rnd;
-    }
-    
-    // Enemy初期化
-    void Initialize(Enemy enemy)
-    {
-        currentEnemy = enemy;
-        currentEnemy.currentHP = currentEnemy.data.maxHP*waveCount;
-
-        //UI
-        if (currentEnemy.hpText != null) currentEnemy.hpText.text = $"HP: {currentEnemy.currentHP}";
-        if (currentEnemy.nameText != null) currentEnemy.nameText.text = currentEnemy.data.enemyName;
-    }
 
     public void Init()
     {
@@ -142,36 +57,71 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    // ダメージ処理
-    public void TakeDamage(int damage)
+    public async void Update()
     {
-        if (currentEnemyObj != null)
-        {
-            currentEnemy.currentHP -= damage;
-            if (currentEnemy.currentHP > 0)
-            {
-                if (currentEnemy.hpText != null) currentEnemy.hpText.text = $"HP: {currentEnemy.currentHP}";
-            }
-            else
-            {
-                Die();
-            }
+        if (currentEnemyCount <= 0) {
+            currentEnemyCount++;
+            await SpawnProcess();
         }
     }
 
+    // ===========================================
+    // スポーン処理
+    // ===========================================
 
-    // 死亡
-    void Die()
+    public async UniTask SpawnNextEnemy()
     {
-        //勝利ボーナス
-        GameManager.Instance.cookieManager.cookies += currentEnemy.data.rewardCookies;
-        
-        Destroy(currentEnemyObj);
+        // EnemyDataListチェック
+        if (enemyDataList == null || enemyDataList.enemyList.Count == 0)
+        {
+            Debug.LogWarning("EnemyDataList is empty!");
+            return;
+        }
 
-        waveCount++;
+        // 敵を順番にまたはランダムに選出
+        int index = (waveCount - 1) % enemyDataList.enemyList.Count;
+        EnemyData enemyData = enemyDataList.enemyList[index];
 
-        //Spawn
-        SpawnProcess();
+        // モデルスポーン
+        await spawner.Spawn(enemyData.prefabAddress, spawnVolume);
+        currentEnemyObj = spawner.prefabs;
+
+        // Enemyコンポーネント取得
+        currentEnemy = currentEnemyObj.GetComponent<Enemy>();
+        currentEnemy.data = enemyData;
+
+        //エネミーコンポーネントを初期化
+        currentEnemy.Initialize(waveCount);
         
+        cts.Cancel();// SpawnProcessキャンセル
+
+        await currentEnemy.RunProcess(runInterval);
+    }
+
+    // ===========================================
+    // スポーン間隔調整
+    // ===========================================
+    CancellationTokenSource cts;
+    public async UniTask SpawnProcess()
+    {
+        cts = new CancellationTokenSource();
+
+        if (currentEnemyObj == null)
+        {
+            await ShowWaitTime(spawnInterval,cts.Token);
+            await SpawnNextEnemy();
+        }
+
+    }
+
+    private async UniTask ShowWaitTime(float seconds,CancellationToken token)
+    {
+        float remaining = seconds;
+        while (remaining > 0f)
+        {
+            timeLimit=remaining;
+            await UniTask.Yield(token); // 次のフレームまで待つ
+            remaining -= Time.deltaTime;
+        }
     }
 }
