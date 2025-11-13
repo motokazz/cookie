@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     public TMP_Text nameText;
 
     public float timeLimit;
+    public float runInterval;
 
     private void Awake()
     {
@@ -33,19 +34,21 @@ public class Enemy : MonoBehaviour
         {
             gameObject.tag = "Enemy";
         }
-
     }
 
     // ===========================================
     // Enemyの初期化 渡したエネミーデータで上書き
     // ===========================================
-    public void Initialize(int waveCount)
+    public void Initialize(int _waveCount,float _runInterval)
     {
-        currentHP = data.maxHP * waveCount;
+        currentHP = data.maxHP * _waveCount;
 
         //UI
         if (hpText != null) hpText.text = $"HP: {currentHP}";
         if (nameText != null) nameText.text = data.enemyName;
+
+        //Run
+        RunProcess(_runInterval).Forget();
     }
 
 
@@ -58,7 +61,10 @@ public class Enemy : MonoBehaviour
     {
         cts = new CancellationTokenSource();
         await ShowWaitTime(runInterval,cts.Token);
-        Run();
+        if (!cts.Token.IsCancellationRequested)
+        {
+            Run();
+        }
     }
 
     private async UniTask ShowWaitTime(float seconds,CancellationToken token)
@@ -92,16 +98,20 @@ public class Enemy : MonoBehaviour
     // 逃走
     public void Run()
     {
+        cts?.Cancel();
+
         GameManager.Instance.enemyManager.currentEnemyCount --;
 
         Destroy(gameObject);
         Debug.Log("run");
+        
     }
 
     // 死亡
     public void Die()
     {
-        cts.Cancel();
+        cts?.Cancel();
+
         //勝利ボーナス
         GameManager.Instance.cookieManager.cookies += data.rewardCookies;
         GameManager.Instance.enemyManager.waveCount++;

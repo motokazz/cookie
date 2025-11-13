@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector] public int waveCount = 1;
     [HideInInspector] public Enemy currentEnemy;
     [HideInInspector] public int currentEnemyCount = 0;
+    [HideInInspector] public float timeLimit;
 
     // Serialize
     [SerializeField] EnemyDataList enemyDataList;
@@ -28,13 +29,14 @@ public class EnemyManager : MonoBehaviour
 
     [Header("エネミーが逃げるまでのインターバル")]
     public float runInterval = 1.0f;
-    public float timeLimit;
 
+
+   
     // Private
     private GameObject currentEnemyObj;
-
     private Spawner spawner;
-
+    private bool spawnReady = false;
+    
 
     private void Awake()
     {
@@ -59,11 +61,24 @@ public class EnemyManager : MonoBehaviour
 
     public async void Update()
     {
-        if (currentEnemyCount <= 0) {
+        // 敵がいなくなったら発生準備
+        if (currentEnemyCount < 1)
+        {
+            spawnReady = true;
+        }
+        else
+        {
+            spawnReady = false;
+        }
+
+        //　準備できてたら敵を発生
+        if (spawnReady) {
             currentEnemyCount++;
-            await SpawnProcess();
+            await UniTask.Delay(TimeSpan.FromSeconds(spawnInterval + UnityEngine.Random.Range(-0.5f, 0.5f)));
+            await SpawnNextEnemy();
         }
     }
+
 
     // ===========================================
     // スポーン処理
@@ -91,37 +106,8 @@ public class EnemyManager : MonoBehaviour
         currentEnemy.data = enemyData;
 
         //エネミーコンポーネントを初期化
-        currentEnemy.Initialize(waveCount);
-        
-        cts.Cancel();// SpawnProcessキャンセル
-
-        await currentEnemy.RunProcess(runInterval);
+        currentEnemy.Initialize(waveCount,runInterval);
     }
 
-    // ===========================================
-    // スポーン間隔調整
-    // ===========================================
-    CancellationTokenSource cts;
-    public async UniTask SpawnProcess()
-    {
-        cts = new CancellationTokenSource();
 
-        if (currentEnemyObj == null)
-        {
-            await ShowWaitTime(spawnInterval,cts.Token);
-            await SpawnNextEnemy();
-        }
-
-    }
-
-    private async UniTask ShowWaitTime(float seconds,CancellationToken token)
-    {
-        float remaining = seconds;
-        while (remaining > 0f)
-        {
-            timeLimit=remaining;
-            await UniTask.Yield(token); // 次のフレームまで待つ
-            remaining -= Time.deltaTime;
-        }
-    }
 }

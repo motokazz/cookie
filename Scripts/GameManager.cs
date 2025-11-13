@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
     public void Checker()
     {
         Debug.Log(enemyManager.currentEnemy);
-        enemyManager.SpawnProcess();
+
+        //currentEnemyを０にして強制的にエネミー発生
+        enemyManager.currentEnemyCount = 0;
     }
 }

@@ -119,6 +119,73 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &63115573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 63115576}
+  - component: {fileID: 63115575}
+  - component: {fileID: 63115574}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &63115574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63115573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6c1c1bfbaaddca4995fa6ad125c8a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPoolAddressable
+  initPoolSize: 10
+  key: Enemy/Cube
+  objectPool: {fileID: 0}
+--- !u!114 &63115575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63115573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70de1fe484f63ab4d85ef6bb1199097f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyWaveSpawnerAddressable
+  spawnPoint: {fileID: 63115576}
+  spawnPointRandomMin: {x: -5, y: 0, z: -5}
+  spawnPointRandomMax: {x: 5, y: 0, z: 5}
+  enemiesPerWave: 5
+  spawnInterval: 1
+  waveInterval: 5
+  pool: {fileID: 63115574}
+--- !u!4 &63115576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63115573}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.64867, y: 3.96, z: 0.95631}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &139955306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,7 +2644,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1234608076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2591,7 +2658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initPoolSize: 10
-  objectToPool: {fileID: 4446491242355358191, guid: 8b2d17cb32879b742a21a8cad170f865, type: 3}
+  objectToPool: {fileID: 4137344449016008614, guid: 8b2d17cb32879b742a21a8cad170f865, type: 3}
 --- !u!4 &1234608077
 Transform:
   m_ObjectHideFlags: 0
@@ -2880,6 +2947,72 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1370033000}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1373655453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1373655455}
+  - component: {fileID: 1373655454}
+  - component: {fileID: 1373655456}
+  m_Layer: 0
+  m_Name: EnemyWaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1373655454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373655453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7081a21a219fa44bbbbaed4c8481062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyWaveSpawner
+  spawnPoint: {fileID: 1373655455}
+  spawnPointRandomMin: {x: -5, y: 5, z: -5}
+  spawnPointRandomMax: {x: 5, y: 5, z: 5}
+  enemiesPerWave: 5
+  spawnInterval: 1
+  waveInterval: 5
+  pool: {fileID: 1373655456}
+--- !u!4 &1373655455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373655453}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1373655456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373655453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c6b6dcc2a5aa2445a0a57df567c831e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
+  initPoolSize: 10
+  objectToPool: {fileID: 4137344449016008614, guid: 8b2d17cb32879b742a21a8cad170f865, type: 3}
 --- !u!1 &1403362710
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,11 +3509,11 @@ MonoBehaviour:
   waveCount: 1
   currentEnemy: {fileID: 0}
   currentEnemyCount: 0
+  timeLimit: 0
   enemyDataList: {fileID: 11400000, guid: 1bbb51f14ef4f3e45b241739651ecc8a, type: 2}
   spawnVolume: {fileID: 1370033000}
   spawnInterval: 1
   runInterval: 10
-  timeLimit: 0
 --- !u!114 &1508897362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4656,3 +4789,5 @@ SceneRoots:
   - {fileID: 1911352910}
   - {fileID: 2076720188}
   - {fileID: 1403362712}
+  - {fileID: 1373655455}
+  - {fileID: 63115576}

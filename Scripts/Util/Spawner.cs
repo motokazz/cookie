@@ -5,7 +5,10 @@ using UnityEngine;
 /// <summary>
 /// Addressableをスポーンする
 /// </summary>
+/// await spawner.Spawn(key,gameObject);
+/// GameObject go = spawner.prefabs;
 /// 
+
 public class Spawner:MonoBehaviour
 {
     [NonSerialized] public GameObject prefabs;
@@ -19,7 +22,7 @@ public class Spawner:MonoBehaviour
 
     public async Task Spawn(string key,GameObject spawnVolume)
     {
-
+        Debug.Log(key);
         // ===========================================
         // Addressable読み込み
         // ===========================================
@@ -36,7 +39,30 @@ public class Spawner:MonoBehaviour
         prefabs.transform.position = spawnPos;
     }
 
- 
+    public async Task SpawnT(string key, Vector3 spawnPos)
+    {
+        Debug.Log(key);
+        // ===========================================
+        // Addressable読み込み
+        // ===========================================
+
+        // モデルスポーン
+        prefabs = await AddressableSpawn.SpawnAsync(key);
+
+        // Addressable読めなかったら予備
+        if (prefabs == null)
+        {
+            prefabs = await AddressableSpawn.SpawnAsync(fallbackPrefab);
+        }
+        prefabs.transform.position = spawnPos;
+    }
+
+
+
+
+
+
+
     // volume内の点をランダムに抽出
     Vector3 GetRandomPositionInSpawnVolume(GameObject spawnVolume)
     {
