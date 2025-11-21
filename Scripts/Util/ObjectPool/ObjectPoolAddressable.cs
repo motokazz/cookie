@@ -21,26 +21,22 @@ public class ObjectPoolAddressable : MonoBehaviour
 
     private void Awake()
     {
-        if (GetComponent<Spawner>() == null)
-        {
-            spawner = gameObject.AddComponent<Spawner>();
-        }
-
+        spawner = gameObject.AddComponent<Spawner>();
         SetupPool();
 
     }
 
     // プールを作成する（ラグが目立たないときに呼び出す）
-    private async void SetupPool()
+    public async void SetupPool()
     {
 
         PooledObjectAddressable instance = null;
         for (int i = 0; i < initPoolSize; i++)
         {
-            //Debug.Log(key);
+
             await spawner.SpawnT(key,transform.position);
             GameObject go = spawner.prefabs;
-            go.transform.SetParent(transform,false);
+            go.transform.SetParent(transform.GetComponentInParent<Transform>(),false);
             if (go.GetComponent<PooledObjectAddressable>() == null)
             {
                 go.AddComponent<PooledObjectAddressable>();
@@ -62,7 +58,6 @@ public class ObjectPoolAddressable : MonoBehaviour
 
     public async Task<PooledObjectAddressable> GetPooledObject()
     {
-        Debug.Log("c");
         // プールの大きさが十分でない場合は、新しい PooledObjects をインスタンス化する
         if (stack.Count == 0)
         {

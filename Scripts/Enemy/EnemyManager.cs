@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-
 
 /// <summary>
 /// エネミーマネージャー
@@ -30,12 +28,13 @@ public class EnemyManager : MonoBehaviour
     [Header("エネミーが逃げるまでのインターバル")]
     public float runInterval = 1.0f;
 
+    //
+    private CancellationTokenSource cts = new CancellationTokenSource();
 
-   
+
     // Private
     private GameObject currentEnemyObj;
     private Spawner spawner;
-    private bool spawnReady = false;
     
 
     private void Awake()
@@ -44,40 +43,53 @@ public class EnemyManager : MonoBehaviour
         {
             spawner = gameObject.AddComponent<Spawner>();
         }
+        
     }
+
+    void Start()
+    {
+        SpawnProcess().Forget();
+    }
+
 
     // ===========================================
     // EnemyManagerの初期化
     // ===========================================
-
     public void Init()
     {
+        if (!cts.Token.IsCancellationRequested)
+        {
+            cts.Cancel();
+            cts = new CancellationTokenSource();
+        }
         waveCount = 1;
+        currentEnemyCount = 0;
         if (currentEnemy != null)
         {
             Destroy(currentEnemyObj);
         }
     }
 
-    public async void Update()
-    {
-        // 敵がいなくなったら発生準備
-        if (currentEnemyCount < 1)
-        {
-            spawnReady = true;
-        }
-        else
-        {
-            spawnReady = false;
-        }
 
-        //　準備できてたら敵を発生
-        if (spawnReady) {
-            currentEnemyCount++;
-            await UniTask.Delay(TimeSpan.FromSeconds(spawnInterval + UnityEngine.Random.Range(-0.5f, 0.5f)));
-            await SpawnNextEnemy();
+    async UniTask SpawnProcess()
+    {
+        while (cts.Token.CanBeCanceled)
+        {
+            if (cts.Token.IsCancellationRequested) { break; }
+            Debug.Log("aaa");
+            await UniTask.WaitUntil(() => currentEnemyCount < 1);
+
+            if (currentEnemyCount < 1)
+            {
+                currentEnemyCount++;
+                await UniTask.Delay(TimeSpan.FromSeconds(spawnInterval + UnityEngine.Random.Range(-0.5f, 0.5f)));
+                await SpawnNextEnemy();
+            }
+
+            await UniTask.WaitWhile(() => currentEnemyCount < 1);
         }
     }
+
 
 
     // ===========================================
@@ -98,7 +110,8 @@ public class EnemyManager : MonoBehaviour
         EnemyData enemyData = enemyDataList.enemyList[index];
 
         // モデルスポーン
-        await spawner.Spawn(enemyData.prefabAddress, spawnVolume);
+
+        await spawner.SpawnT(enemyData.prefabAddress, MS_Random.GetRandomPositionInSpawnVolume(spawnVolume),false);
         currentEnemyObj = spawner.prefabs;
 
         // Enemyコンポーネント取得
@@ -106,8 +119,16 @@ public class EnemyManager : MonoBehaviour
         currentEnemy.data = enemyData;
 
         //エネミーコンポーネントを初期化
-        currentEnemy.Initialize(waveCount,runInterval);
+        currentEnemy.runInterval = runInterval;
+        currentEnemy.waveCount = waveCount;
+        currentEnemy.Initialize();
+        currentEnemyObj.SetActive(true);
+
     }
 
-
+    public void Reset()
+    {
+        Init();
+        SpawnProcess().Forget();
+    }
 }

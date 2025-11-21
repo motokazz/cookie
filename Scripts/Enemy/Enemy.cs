@@ -15,9 +15,19 @@ public class Enemy : MonoBehaviour
 
     public TMP_Text hpText;
     public TMP_Text nameText;
+    [SerializeField] Gauge hpGauge;
+    [SerializeField] Gauge timeGauge;
 
-    public float timeLimit;
-    public float runInterval;
+    public float timeLimit = 1.0f;
+    public float runInterval = 1.0f;
+
+    public int waveCount=1;
+
+
+    //
+    private CancellationTokenSource cts = new CancellationTokenSource();
+
+
 
     private void Awake()
     {
@@ -36,19 +46,46 @@ public class Enemy : MonoBehaviour
         }
     }
 
+
+    private void OnEnable()
+    {
+        Initialize();
+    }
+
+    private void OnDisable()
+    {
+        cts?.Cancel();
+    }
+
+    private void Update()
+    {
+        if (hpGauge != null)
+        {
+            hpGauge.gaugeValue = (float)currentHP/(float)(data.maxHP*waveCount);
+        }
+        if (timeGauge != null)
+        {
+            timeGauge.gaugeValue = timeLimit / runInterval;
+        }
+    }
+
     // ===========================================
     // Enemyの初期化 渡したエネミーデータで上書き
     // ===========================================
-    public void Initialize(int _waveCount,float _runInterval)
+    public void Initialize()
     {
-        currentHP = data.maxHP * _waveCount;
+        if (!cts.Token.IsCancellationRequested)
+        {
+            cts.Cancel();
+        }
+        currentHP = data.maxHP * waveCount;
 
         //UI
         if (hpText != null) hpText.text = $"HP: {currentHP}";
         if (nameText != null) nameText.text = data.enemyName;
 
         //Run
-        RunProcess(_runInterval).Forget();
+        RunProcess(runInterval).Forget();
     }
 
 
@@ -56,7 +93,7 @@ public class Enemy : MonoBehaviour
     // スポーン処理
     // ===========================================
 
-    private CancellationTokenSource cts;
+    // 逃走処理
     public async UniTask RunProcess(float runInterval)
     {
         cts = new CancellationTokenSource();
@@ -66,7 +103,7 @@ public class Enemy : MonoBehaviour
             Run();
         }
     }
-
+    // ウェイト処理
     private async UniTask ShowWaitTime(float seconds,CancellationToken token)
     {
         float remaining = seconds;
@@ -75,6 +112,7 @@ public class Enemy : MonoBehaviour
             GameManager.Instance.enemyManager.timeLimit = remaining;
             await UniTask.Yield(token); // 次のフレームまで待つ
             remaining -= Time.deltaTime;
+            timeLimit = remaining;
         }
     }
 
@@ -102,7 +140,16 @@ public class Enemy : MonoBehaviour
 
         GameManager.Instance.enemyManager.currentEnemyCount --;
 
-        Destroy(gameObject);
+        var pooledObject = GetComponent<PooledObjectAddressable>();
+        if (pooledObject != null)
+        {
+            pooledObject.Release();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         Debug.Log("run");
         
     }
@@ -118,8 +165,15 @@ public class Enemy : MonoBehaviour
         GameManager.Instance.enemyManager.currentEnemyCount --;
 
         //Spawn
-        
-        Destroy(gameObject);
+        var pooledObject = GetComponent<PooledObjectAddressable>();
+        if (pooledObject != null)
+        {
+            pooledObject.Release();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         Debug.Log("dead");
     }

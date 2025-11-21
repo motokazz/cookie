@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         upgradeUIManager.Init();
 
         // EnemyManager初期化
-        enemyManager.Init();
+        enemyManager.Reset();
 
         dataManager.Init();
         dataManager.Save();

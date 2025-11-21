@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawnera : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] Transform[] spawnPoints;
