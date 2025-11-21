@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-
 
 /// <summary>
 /// エネミーマネージャー
@@ -16,6 +14,7 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector] public int waveCount = 1;
     [HideInInspector] public Enemy currentEnemy;
     [HideInInspector] public int currentEnemyCount = 0;
+    [HideInInspector] public float timeLimit;
 
     // Serialize
     [SerializeField] EnemyDataList enemyDataList;
@@ -28,13 +27,15 @@ public class EnemyManager : MonoBehaviour
 
     [Header("エネミーが逃げるまでのインターバル")]
     public float runInterval = 1.0f;
-    public float timeLimit;
+
+    //
+    private CancellationTokenSource cts = new CancellationTokenSource();
+
 
     // Private
     private GameObject currentEnemyObj;
-
     private Spawner spawner;
-
+    
 
     private void Awake()
     {
@@ -42,28 +43,54 @@ public class EnemyManager : MonoBehaviour
         {
             spawner = gameObject.AddComponent<Spawner>();
         }
+        
     }
+
+    void Start()
+    {
+        SpawnProcess().Forget();
+    }
+
 
     // ===========================================
     // EnemyManagerの初期化
     // ===========================================
-
     public void Init()
     {
+        if (!cts.Token.IsCancellationRequested)
+        {
+            cts.Cancel();
+            cts = new CancellationTokenSource();
+        }
         waveCount = 1;
+        currentEnemyCount = 0;
         if (currentEnemy != null)
         {
             Destroy(currentEnemyObj);
         }
     }
 
-    public async void Update()
+
+    async UniTask SpawnProcess()
     {
-        if (currentEnemyCount <= 0) {
-            currentEnemyCount++;
-            await SpawnProcess();
+        while (cts.Token.CanBeCanceled)
+        {
+            if (cts.Token.IsCancellationRequested) { break; }
+            Debug.Log("aaa");
+            await UniTask.WaitUntil(() => currentEnemyCount < 1);
+
+            if (currentEnemyCount < 1)
+            {
+                currentEnemyCount++;
+                await UniTask.Delay(TimeSpan.FromSeconds(spawnInterval + UnityEngine.Random.Range(-0.5f, 0.5f)));
+                await SpawnNextEnemy();
+            }
+
+            await UniTask.WaitWhile(() => currentEnemyCount < 1);
         }
     }
+
+
 
     // ===========================================
     // スポーン処理
@@ -83,7 +110,8 @@ public class EnemyManager : MonoBehaviour
         EnemyData enemyData = enemyDataList.enemyList[index];
 
         // モデルスポーン
-        await spawner.Spawn(enemyData.prefabAddress, spawnVolume);
+
+        await spawner.SpawnT(enemyData.prefabAddress, MS_Random.GetRandomPositionInSpawnVolume(spawnVolume),false);
         currentEnemyObj = spawner.prefabs;
 
         // Enemyコンポーネント取得
@@ -91,37 +119,16 @@ public class EnemyManager : MonoBehaviour
         currentEnemy.data = enemyData;
 
         //エネミーコンポーネントを初期化
-        currentEnemy.Initialize(waveCount);
-        
-        cts.Cancel();// SpawnProcessキャンセル
-
-        await currentEnemy.RunProcess(runInterval);
-    }
-
-    // ===========================================
-    // スポーン間隔調整
-    // ===========================================
-    CancellationTokenSource cts;
-    public async UniTask SpawnProcess()
-    {
-        cts = new CancellationTokenSource();
-
-        if (currentEnemyObj == null)
-        {
-            await ShowWaitTime(spawnInterval,cts.Token);
-            await SpawnNextEnemy();
-        }
+        currentEnemy.runInterval = runInterval;
+        currentEnemy.waveCount = waveCount;
+        currentEnemy.Initialize();
+        currentEnemyObj.SetActive(true);
 
     }
 
-    private async UniTask ShowWaitTime(float seconds,CancellationToken token)
+    public void Reset()
     {
-        float remaining = seconds;
-        while (remaining > 0f)
-        {
-            timeLimit=remaining;
-            await UniTask.Yield(token); // 次のフレームまで待つ
-            remaining -= Time.deltaTime;
-        }
+        Init();
+        SpawnProcess().Forget();
     }
 }

@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ボタンで開閉（移動を使って）するUI作成
+/// 移動量の数値設定のみで作動する
+/// </summary>
+/// 
+
 public class UISlideToggle : MonoBehaviour
 {
     [SerializeField] RectTransform panel;   // 開閉したいUI

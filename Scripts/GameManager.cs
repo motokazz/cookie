@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         upgradeUIManager.Init();
 
         // EnemyManager初期化
-        enemyManager.Init();
+        enemyManager.Reset();
 
         dataManager.Init();
         dataManager.Save();
@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
     public void Checker()
     {
         Debug.Log(enemyManager.currentEnemy);
-        enemyManager.SpawnProcess();
+
+        //currentEnemyを０にして強制的にエネミー発生
+        enemyManager.currentEnemyCount = 0;
     }
 }

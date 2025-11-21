@@ -15,8 +15,19 @@ public class Enemy : MonoBehaviour
 
     public TMP_Text hpText;
     public TMP_Text nameText;
+    [SerializeField] Gauge hpGauge;
+    [SerializeField] Gauge timeGauge;
 
-    public float timeLimit;
+    public float timeLimit = 1.0f;
+    public float runInterval = 1.0f;
+
+    public int waveCount=1;
+
+
+    //
+    private CancellationTokenSource cts = new CancellationTokenSource();
+
+
 
     private void Awake()
     {
@@ -33,19 +44,48 @@ public class Enemy : MonoBehaviour
         {
             gameObject.tag = "Enemy";
         }
+    }
 
+
+    private void OnEnable()
+    {
+        Initialize();
+    }
+
+    private void OnDisable()
+    {
+        cts?.Cancel();
+    }
+
+    private void Update()
+    {
+        if (hpGauge != null)
+        {
+            hpGauge.gaugeValue = (float)currentHP/(float)(data.maxHP*waveCount);
+        }
+        if (timeGauge != null)
+        {
+            timeGauge.gaugeValue = timeLimit / runInterval;
+        }
     }
 
     // ===========================================
     // Enemyの初期化 渡したエネミーデータで上書き
     // ===========================================
-    public void Initialize(int waveCount)
+    public void Initialize()
     {
+        if (!cts.Token.IsCancellationRequested)
+        {
+            cts.Cancel();
+        }
         currentHP = data.maxHP * waveCount;
 
         //UI
         if (hpText != null) hpText.text = $"HP: {currentHP}";
         if (nameText != null) nameText.text = data.enemyName;
+
+        //Run
+        RunProcess(runInterval).Forget();
     }
 
 
@@ -53,14 +93,17 @@ public class Enemy : MonoBehaviour
     // スポーン処理
     // ===========================================
 
-    private CancellationTokenSource cts;
+    // 逃走処理
     public async UniTask RunProcess(float runInterval)
     {
         cts = new CancellationTokenSource();
         await ShowWaitTime(runInterval,cts.Token);
-        Run();
+        if (!cts.Token.IsCancellationRequested)
+        {
+            Run();
+        }
     }
-
+    // ウェイト処理
     private async UniTask ShowWaitTime(float seconds,CancellationToken token)
     {
         float remaining = seconds;
@@ -69,6 +112,7 @@ public class Enemy : MonoBehaviour
             GameManager.Instance.enemyManager.timeLimit = remaining;
             await UniTask.Yield(token); // 次のフレームまで待つ
             remaining -= Time.deltaTime;
+            timeLimit = remaining;
         }
     }
 
@@ -92,24 +136,44 @@ public class Enemy : MonoBehaviour
     // 逃走
     public void Run()
     {
+        cts?.Cancel();
+
         GameManager.Instance.enemyManager.currentEnemyCount --;
 
-        Destroy(gameObject);
+        var pooledObject = GetComponent<PooledObjectAddressable>();
+        if (pooledObject != null)
+        {
+            pooledObject.Release();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         Debug.Log("run");
+        
     }
 
     // 死亡
     public void Die()
     {
-        cts.Cancel();
+        cts?.Cancel();
+
         //勝利ボーナス
         GameManager.Instance.cookieManager.cookies += data.rewardCookies;
         GameManager.Instance.enemyManager.waveCount++;
         GameManager.Instance.enemyManager.currentEnemyCount --;
 
         //Spawn
-        
-        Destroy(gameObject);
+        var pooledObject = GetComponent<PooledObjectAddressable>();
+        if (pooledObject != null)
+        {
+            pooledObject.Release();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         Debug.Log("dead");
     }

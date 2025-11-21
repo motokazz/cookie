@@ -8,22 +8,29 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private uint initPoolSize;
-    [SerializeField] private PooledObject objectToPool;
+    [SerializeField] private GameObject objectToPool;
     // コレクション内のプールされたオブジェクトを格納する
-    private Stack<PooledObject> stack;
+    private Stack<PooledObject> stack = new Stack<PooledObject>();
 
-    private void Start()
+    private void Awake()
     {
         SetupPool();
     }
+
     // プールを作成する（ラグが目立たないときに呼び出す）
     private void SetupPool()
     {
-        stack = new Stack<PooledObject>();
         PooledObject instance = null;
         for (int i = 0; i < initPoolSize; i++)
         {
-            instance = Instantiate(objectToPool);
+            var go = Instantiate(objectToPool, transform);
+
+            if (go.GetComponent<PooledObject>() == null)
+            {
+                go.AddComponent<PooledObject>(); 
+            }
+
+            instance = go.GetComponent<PooledObject>();
             instance.Pool = this;
             instance.gameObject.SetActive(false);
             stack.Push(instance);
@@ -35,7 +42,14 @@ public class ObjectPool : MonoBehaviour
         // プールの大きさが十分でない場合は、新しい PooledObjects をインスタンス化する
         if (stack.Count == 0)
         {
-            PooledObject newInstance = Instantiate(objectToPool);
+            var go = Instantiate(objectToPool, transform);
+
+            if (go.GetComponent<PooledObject>() == null)
+            {
+                go.AddComponent<PooledObject>();
+            }
+
+            PooledObject newInstance = go.GetComponent<PooledObject>();
             newInstance.Pool = this;
             return newInstance;
         }
